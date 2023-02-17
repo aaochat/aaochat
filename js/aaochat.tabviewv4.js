@@ -1811,10 +1811,10 @@ $(document).ready(function(){
     if(isAaochatTabRegisted==false){
       OC.Plugins.register('OCA.Files.FileList', OCA.Aaochattab.Util);
       setInterval(function(){
+        console.log('reattaching tab to fileList');
         if(isAaochatTabRegisted==false){
           OC.Plugins.register('OCA.Files.FileList', OCA.Aaochattab.Util);
         }
-       
       },1000);
     }
 
