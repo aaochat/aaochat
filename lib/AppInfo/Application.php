@@ -61,7 +61,7 @@ use OC\Files\Node\File;
 class Application extends App implements IBootstrap {
 
     public const APP_ID = 'aaochat';
-    public const APP_VERSION = 'v6';
+    public const APP_VERSION = 'v7';
 
     public const APP_NAME = 'Aao Chat';
     /**
@@ -236,7 +236,7 @@ class Application extends App implements IBootstrap {
             if($this->isLicenseValid === 'yes') {
                 Util::addScript(self::APP_ID, 'authkey');
                 Util::addScript(self::APP_ID, 'aaochat.tabview'.self::APP_VERSION);
-                // Util::addScript(self::APP_ID, 'aaochattab.plugin');
+                Util::addScript(self::APP_ID, 'aaochattab.plugin');
             }
             Util::addStyle(self::APP_ID, 'aaochat');
             Util::addStyle(self::APP_ID, 'aaochat-icons');

@@ -31,7 +31,7 @@
 
         OCA.Files.Sidebar.state.tabs = newTabs;
         */
-
+        console.log('aaochat-tab registerTabView called');
         fileList.registerTabView(new OCA.Aaochattab.AaochatTabView('AaochatTabView', {order:-51}));
 
       }, 500);
