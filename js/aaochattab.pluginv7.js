@@ -16,9 +16,9 @@ $(document).ready(function () {
      * @param {OCA.Files.FileList} fileList file list to be extended
      */
     attach: function(fileList) {
-
-      console.log(fileList);
       
+      var newTabs = [];
+      var detailTabs = OCA.Files.Sidebar.state.tabs;
       
       setTimeout(function(){
         /*
@@ -42,9 +42,10 @@ $(document).ready(function () {
 
   setInterval(function(){
     if( window.isLoadedAaochatPlugin==false){
+      console.log(OC.Plugins._plugins);
       OC.Plugins.register('OCA.Files.FileList', OCA.Aaochattab.Util);
     }
-  },2000);
+  },500);
 
 });
 

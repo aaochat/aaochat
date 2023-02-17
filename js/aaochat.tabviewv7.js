@@ -2,7 +2,6 @@ $(document).ready(function () {
   windowFileId = 0;
   console.log('load aaochat tabview');
   var aaochatTabPluginLoaded = false;
-  var isAaochatTabRegisted = false;
   var aaochatTabPlugin = function() {
     if(OCA.Files && OCA.Files.DetailTabView && aaochatTabPluginLoaded == false){
 
@@ -18,7 +17,6 @@ $(document).ready(function () {
         aaochtChannel: [],
         WebSocketObj: null,
         aaochtMessages: [],
-        enabled: true,
         aaochtRootUser: [],
         aaochtChannelMessageCount:0,
         aaochtChannelMessageCounter:0,
