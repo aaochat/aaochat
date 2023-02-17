@@ -39,11 +39,15 @@ $(document).ready(function () {
   };
 
 
-  setTimeout(function(){
-    if( window.isLoadedAaochatPlugin==false){
-      console.log(OC.Plugins._plugins);
+  setInterval(function(){
+    if(window.isLoadedAaochatPlugin == false){
       OC.Plugins.register('OCA.Files.FileList', OCA.Aaochattab.Util);
-      OCA.Files.FileList.prototype.registerTabView(new OCA.Aaochattab.AaochatTabView('AaochatTabView', {order:-51}))
+      try {
+        OCA.Files.FileList.prototype.registerTabView(new OCA.Aaochattab.AaochatTabView('AaochatTabView', {order:-51}))
+        window.isLoadedAaochatPlugin = true;
+      } catch(e){
+        console.log('Failed to load aaochat will try after sometime');
+      }
     }
   },1000);
 
