@@ -1768,7 +1768,6 @@ $(document).ready(function(){
         }
       });
 
-      console.log(AaochatTabView);
       
       OCA.Aaochattab = OCA.Aaochattab || {};
       OCA.Aaochattab.AaochatTabView = AaochatTabView;

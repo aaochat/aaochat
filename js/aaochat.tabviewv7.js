@@ -1773,6 +1773,7 @@ $(document).ready(function () {
       OCA.Aaochattab = OCA.Aaochattab || {};
       OCA.Aaochattab.AaochatTabView = AaochatTabView;
     
+      console.log(AaochatTabView);
 
     aaochatTabPluginLoaded = true;
     clearInterval(window.aaochatTabPluginInterval);
