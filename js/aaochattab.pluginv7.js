@@ -30,7 +30,6 @@ $(document).ready(function () {
 
         OCA.Files.Sidebar.state.tabs = newTabs;
         */
-        console.log('aaochat-tab registerTabView called');
         fileList.registerTabView(new OCA.Aaochattab.AaochatTabView('AaochatTabView', {order:-51}));
         window.isLoadedAaochatPlugin =  true;
 
@@ -40,12 +39,12 @@ $(document).ready(function () {
   };
 
 
-  setInterval(function(){
+  setTimeout(function(){
     if( window.isLoadedAaochatPlugin==false){
       console.log(OC.Plugins._plugins);
       OC.Plugins.register('OCA.Files.FileList', OCA.Aaochattab.Util);
     }
-  },500);
+  },1000);
 
 });
 
