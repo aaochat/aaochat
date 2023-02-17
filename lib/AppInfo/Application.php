@@ -235,8 +235,8 @@ class Application extends App implements IBootstrap {
 		$server->getEventDispatcher()->addListener('\OCP\Collaboration\Resources::loadAdditionalScripts', function () {
             if($this->isLicenseValid === 'yes') {
                 Util::addScript(self::APP_ID, 'authkey');
-                //Util::addScript(self::APP_ID, 'aaochat.tabview');
-                //Util::addScript(self::APP_ID, 'aaochattab.plugin');
+                Util::addScript(self::APP_ID, 'aaochat.tabview'.self::APP_VERSION);
+                // Util::addScript(self::APP_ID, 'aaochattab.plugin');
             }
             Util::addStyle(self::APP_ID, 'aaochat');
             Util::addStyle(self::APP_ID, 'aaochat-icons');
@@ -332,8 +332,8 @@ class Application extends App implements IBootstrap {
         /**
 		 * Register Events
 		*/
-            $context->registerEventListener(LoadAdditionalScriptsEvent::class, LoadAdditionalListener::class);
-            $context->registerEventListener(LoadSidebar::class, LoadSidebarListener::class);
+            // $context->registerEventListener(LoadAdditionalScriptsEvent::class, LoadAdditionalListener::class);
+            // $context->registerEventListener(LoadSidebar::class, LoadSidebarListener::class);
     }
 
     public function redirectToSettingPage()
