@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).load(function () {
   windowFileId = 0;
   console.log('load aaochat tabview');
   var aaochatTabPluginLoaded = false;
