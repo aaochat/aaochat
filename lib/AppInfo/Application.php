@@ -61,7 +61,7 @@ use OC\Files\Node\File;
 class Application extends App implements IBootstrap {
 
     public const APP_ID = 'aaochat';
-    public const APP_VERSION = 'v3';
+    public const APP_VERSION = 'v4';
 
     public const APP_NAME = 'Aao Chat';
     /**
