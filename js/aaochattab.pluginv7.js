@@ -19,8 +19,6 @@ $(document).ready(function () {
 
       console.log(fileList);
       
-      var newTabs = [];
-      var detailTabs = OCA.Files.Sidebar.state.tabs;
       
       setTimeout(function(){
         /*
