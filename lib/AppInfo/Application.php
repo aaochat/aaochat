@@ -61,7 +61,7 @@ use OC\Files\Node\File;
 class Application extends App implements IBootstrap {
 
     public const APP_ID = 'aaochat';
-    public const APP_VERSION = 'v4';
+    public const APP_VERSION = 'v5';
 
     public const APP_NAME = 'Aao Chat';
     /**
@@ -332,10 +332,8 @@ class Application extends App implements IBootstrap {
         /**
 		 * Register Events
 		*/
-        if($this->isLicenseValid === 'yes') {
             $context->registerEventListener(LoadAdditionalScriptsEvent::class, LoadAdditionalListener::class);
             $context->registerEventListener(LoadSidebar::class, LoadSidebarListener::class);
-        }
     }
 
     public function redirectToSettingPage()
