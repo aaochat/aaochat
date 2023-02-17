@@ -1786,7 +1786,7 @@ $(document).ready(function(){
          * @param {OCA.Files.FileList} fileList file list to be extended
          */
         attach: function(fileList) {
-          console.log('aaochat-tabview attach function called');
+          console.log('aaochat-tabview attach function called', fileList);
           if (fileList.id === 'trashbin' || fileList.id === 'files.public') {
             return;
           }
