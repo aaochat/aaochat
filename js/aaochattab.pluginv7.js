@@ -16,11 +16,7 @@ $(document).ready(function () {
      * @param {OCA.Files.FileList} fileList file list to be extended
      */
     attach: function(fileList) {
-      if (fileList.id === 'trashbin' || fileList.id === 'files.public') {
-        return;
-      }
-
-      
+ 
       var newTabs = [];
       var detailTabs = OCA.Files.Sidebar.state.tabs;
       
@@ -47,10 +43,10 @@ $(document).ready(function () {
   setInterval(function(){
     if( window.isLoadedAaochatPlugin==false){
       console.log(OC.Plugins._plugins);
-      OC.Plugins.register('OCA.Files.FileList', OCA.Aaochattab.Util);
+      OC.Plugins.register('OCA.Files.Aaochat', OCA.Aaochattab.Util);
     }
   },500);
 
 });
 
-OC.Plugins.register('OCA.Files.FileList', OCA.Aaochattab.Util)
+OC.Plugins.register('OCA.Files.Aaochat', OCA.Aaochattab.Util)
