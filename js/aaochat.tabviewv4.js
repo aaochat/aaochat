@@ -2,6 +2,7 @@ $(document).ready(function(){
   windowFileId = 0;
   console.log('load aaochat tabview');
   var aaochatTabPluginLoaded = false;
+  var isAaochatTabRegisted = false;
   var aaochatTabPlugin = function() {
     if(OCA.Files && OCA.Files.DetailTabView && aaochatTabPluginLoaded == false){
 
@@ -1771,8 +1772,6 @@ $(document).ready(function(){
       OCA.Aaochattab = OCA.Aaochattab || {};
       OCA.Aaochattab.AaochatTabView = AaochatTabView;
     
-
-
       OCA.Aaochattab = OCA.Aaochattab || {};
     
       /**
@@ -1787,13 +1786,6 @@ $(document).ready(function(){
          */
         attach: function(fileList) {
           console.log('aaochat-tabview attach function called', fileList);
-          if (fileList.id === 'trashbin' || fileList.id === 'files.public') {
-            return;
-          }
-    
-          
-          var newTabs = [];
-          var detailTabs = OCA.Files.Sidebar.state.tabs;
           
           setTimeout(function(){
             /*
@@ -1805,17 +1797,26 @@ $(document).ready(function(){
     
             OCA.Files.Sidebar.state.tabs = newTabs;
             */
-    
+       
             console.log('aaochat-tabview registerTabView called');
             fileList.registerTabView(new OCA.Aaochattab.AaochatTabView('AaochatTabView', {order:-51}));
-    
+            isAaochatTabRegisted = true;
           }, 500);
     
         }
       };
     
     console.log('aaochat-tabview plugins register called');
-    OC.Plugins.register('OCA.Files.FileList', OCA.Aaochattab.Util);
+
+    if(isAaochatTabRegisted==false){
+      OC.Plugins.register('OCA.Files.FileList', OCA.Aaochattab.Util);
+      setInterval(function(){
+        if(isAaochatTabRegisted==false){
+          OC.Plugins.register('OCA.Files.FileList', OCA.Aaochattab.Util);
+        }
+       
+      },1000);
+    }
 
     aaochatTabPluginLoaded = true;
     clearInterval(window.aaochatTabPluginInterval);

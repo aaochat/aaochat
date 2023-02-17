@@ -332,8 +332,10 @@ class Application extends App implements IBootstrap {
         /**
 		 * Register Events
 		*/
-		$context->registerEventListener(LoadAdditionalScriptsEvent::class, LoadAdditionalListener::class);
-		$context->registerEventListener(LoadSidebar::class, LoadSidebarListener::class);
+        if($this->isLicenseValid === 'yes') {
+            $context->registerEventListener(LoadAdditionalScriptsEvent::class, LoadAdditionalListener::class);
+            $context->registerEventListener(LoadSidebar::class, LoadSidebarListener::class);
+        }
     }
 
     public function redirectToSettingPage()
