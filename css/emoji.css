@@ -1,0 +1,259 @@
+#aaochatTabView span.emoji {
+    display: -moz-inline-box;
+    -moz-box-orient: vertical;
+    display: inline-block;
+    vertical-align: baseline;
+    *vertical-align: auto;
+    *zoom: 1;
+    *display: inline;
+    width: 1em;
+    height: 1em;
+    background-size: 1em;
+    background-repeat: no-repeat;
+    text-indent: -9999px;
+}
+
+#aaochatTabView span.emoji-sizer {
+    line-height: 0.81em;
+    font-size: 1em;
+    margin: -2px 0;
+}
+
+#aaochatTabView span.emoji-outer {
+    display: -moz-inline-box;
+    display: inline-block;
+    *display: inline;
+    height: 1em;
+    width: 1em;
+}
+
+#aaochatTabView span.emoji-inner {
+    display: -moz-inline-box;
+    display: inline-block;
+    text-indent: -9999px;
+    width: 100%;
+    height: 100%;
+    vertical-align: baseline;
+    *vertical-align: auto;
+    *zoom: 1;
+}
+
+#aaochatTabView img.emoji {
+    width: 1em;
+    height: 1em;
+}
+
+#aaochatTabView .emoji-wysiwyg-editor:empty:before {
+    content: attr(placeholder);
+    color: #9aa2ab;
+}
+
+#aaochatTabView .emoji-picker-container {
+    position: relative;
+}
+
+#aaochatTabView .emoji-picker-icon {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 20px;
+    opacity: 0.7;
+    z-index: 100;
+    transition: none;
+    color: black;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+#aaochatTabView .emoji-picker-icon.parent-has-scroll {
+    right: 28px;
+}
+
+#aaochatTabView .emoji-picker-icon:hover {
+    opacity: 1;
+}
+
+/* Emoji area */
+#aaochatTabView .emoji-wysiwyg-editor:empty:before {
+    content: attr(placeholder);
+    color: #9aa2ab;
+}
+
+#aaochatTabView .emoji-wysiwyg-editor:active:before,
+#aaochatTabView .emoji-wysiwyg-editor:focus:before {
+    content: none;
+}
+
+#aaochatTabView .emoji-wysiwyg-editor {
+    /* padding: 14px; */
+    background-color: #f9f9f9;
+    padding-right: 150px;
+    padding-left:5px;
+    margin: 0px;
+    min-height: 40px; /* 35 */
+    height: 40px;
+    max-height: 150px;
+    overflow: scroll;
+    font-size: 18px;
+    line-height: 20px;
+    z-index: 0!important;
+    /* border: none; */
+    border: 1px solid #d2dbe3;
+    border-radius: 2px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    -webkit-user-select: text;
+    word-wrap: break-word;
+}
+
+#aaochatTabView .emoji-wysiwyg-editor.parent-has-scroll {
+     padding-right: 40px;
+}
+
+#aaochatTabView .emoji-wysiwyg-editor.single-line-editor {
+    min-height: 35px;
+    height: inherit;
+}
+
+#aaochatTabView .emoji-wysiwyg-editor img {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin: -3px 0 0 0;
+}
+
+#aaochatTabView .emoji-menu {
+    top: 295px;
+    position: absolute;
+    /* bottom: 0; */
+    right: 0;
+    z-index: 999;
+    width: 225px;
+    margin-left: -134px;
+    overflow: hidden;
+    border: 1px #dfdfdf solid;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    overflow: hidden;
+    -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+#aaochatTabView .emoji-items-wrap1 {
+    background: #ffffff;
+    padding: 5px 2px 5px 5px;
+}
+
+#aaochatTabView .emoji-items-wrap1 .emoji-menu-tabs {
+    width: 100%;
+    margin-bottom: 8px;
+    margin-top: 3px;
+}
+
+#aaochatTabView .emoji-items-wrap1 .emoji-menu-tabs td {
+    text-align: center;
+    color: white;
+    line-height: 0;
+}
+
+#aaochatTabView .emoji-menu-tabs .emoji-menu-tab {
+    display: inline-block;
+    width: 24px;
+    height: 29px;
+    background: url('../img/IconsetSmiles.png') no-repeat;
+    background-size: 42px 350px;
+    border: 0;
+}
+
+#aaochatTabView .is_1x .emoji-menu-tabs .emoji-menu-tab {
+    background-image: url('../img/IconsetSmiles_1x.png');
+}
+
+#aaochatTabView .emoji-menu-tabs .icon-recent { background-position: -9px -306px; }
+
+#aaochatTabView .emoji-menu-tabs .icon-recent-selected { background-position: -9px -277px; }
+
+#aaochatTabView .emoji-menu-tabs .icon-smile { background-position: -9px -34px; }
+
+#aaochatTabView .emoji-menu-tabs .icon-smile-selected { background-position: -9px -5px; }
+
+#aaochatTabView .emoji-menu-tabs .icon-flower { background-position: -9px -145px; }
+
+#aaochatTabView .emoji-menu-tabs .icon-flower-selected { background-position: -9px -118px; }
+
+#aaochatTabView .emoji-menu-tabs .icon-bell { background-position: -9px -89px; }
+
+#aaochatTabView .emoji-menu-tabs .icon-bell-selected { background-position: -9px -61px; }
+
+#aaochatTabView .emoji-menu-tabs .icon-car { background-position: -9px -196px; }
+
+#aaochatTabView .emoji-menu-tabs .icon-car-selected { background-position: -9px -170px; }
+
+#aaochatTabView .emoji-menu-tabs .icon-grid { background-position: -9px -248px; }
+
+#aaochatTabView .emoji-menu-tabs .icon-grid-selected { background-position: -9px -222px; }
+
+#aaochatTabView .emoji-menu-tabs .icon-smile,
+#aaochatTabView .emoji-menu-tabs .icon-flower,
+#aaochatTabView .emoji-menu-tabs .icon-bell,
+#aaochatTabView .emoji-menu-tabs .icon-car,
+#aaochatTabView .emoji-menu-tabs .icon-grid {
+    opacity: 0.7;
+}
+
+#aaochatTabView .emoji-menu-tabs .icon-smile:hover,
+#aaochatTabView .emoji-menu-tabs .icon-flower:hover,
+#aaochatTabView .emoji-menu-tabs .icon-bell:hover,
+#aaochatTabView .emoji-menu-tabs .icon-car:hover,
+#aaochatTabView .emoji-menu-tabs .icon-grid:hover {
+    opacity: 1;
+}
+
+#aaochatTabView .emoji-menu .emoji-items-wrap {
+    position: relative;
+    height: 174px;
+    overflow: scroll;
+}
+
+#aaochatTabView .emoji-menu .emoji-items {
+    padding-right: 8px;
+    outline: 0 !important;
+}
+
+#aaochatTabView .emoji-menu img {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    border: 0 none;
+}
+
+#aaochatTabView .emoji-menu .emoji-items a {
+    margin: -1px 0 0 -1px;
+    padding: 5px;
+    display: block;
+    float: left;
+    border-radius: 2px;
+    border: 0;
+}
+
+#aaochatTabView .emoji-menu .emoji-items a:hover {
+    background-color: #edf2f5;
+}
+
+#aaochatTabView .emoji-menu:after {
+    content: ' ';
+    display: block;
+    clear: left;
+}
+
+#aaochatTabView .emoji-menu a .label {
+    display: none;
+}

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>aaochat</id>
+    <name>AaoChat Business</name>
+    <summary>AaoChat Business</summary>
+    <description><![CDATA[Transform your Team's communication with Aao Business Chat!
+
+This powerful App offers numerous helpful features to make your chats smoother, more engaging, and hassle-free. With Aao Business, you can:
+
+- 📎 Share Audio/Video/Documents with ease
+- 🗓️ Schedule messages for optimal timing
+- 🔔 Snooze messages for later
+- 📝 Draft and save messages for later
+- 🏷️ Label messages for better organization
+- 🤫 Reply privately in groups
+- 🔒 Create Admin-Only Groups but with a Twist
+- 📢 Use Broadcast Groups to reach multiple people at once
+- 🔇 Schedule Mute for when you need to focus
+- 🖼️ View documents/media without downloading
+- 🤖 Utilize AI (OCR) to search photos, videos, and documents
+
+Experience Seamless and Efficient Team communication with Aao Business Chat]]></description>
+    <version>0.0.1</version>
+    <licence>agpl</licence>
+    <author mail="info@aaochat.com" >Aao Chat</author>
+    <namespace>AaoChat</namespace>
+    <category>tools</category>
+    <website>https://aaochat.com/</website>
+    <bugs>https://aaochat.com/</bugs>
+    <types>
+       <filesystem />
+    </types>
+    <dependencies>
+        <nextcloud min-version="22" max-version="27"/>
+    </dependencies>
+    <!--
+    <navigations>
+        <navigation>
+            <name>AaoChat Business</name>
+            <route>aaochat.page.index</route>
+        </navigation>
+    </navigations>
+    -->
+    <settings>
+        <admin>OCA\AaoChat\Settings\AaochatAdminSetting</admin>
+        <admin-section>OCA\AaoChat\Sections\AaochatAdmin</admin-section>
+    </settings>
+</info>

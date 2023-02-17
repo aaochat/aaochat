@@ -1,0 +1,125 @@
+/**
+ * @license GNU AGPL version 3 or any later version
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+
+#side-menu-section input[type="checkbox"] {
+    vertical-align: middle;
+}
+
+#side-menu-section select {
+    margin: 10px 0 10px 0;
+}
+
+.keyboard-key {
+    padding: 1px 9px;
+    margin: 0 2px;
+    background: #eee;
+    border: 1px solid #aaa;
+    color: #555;
+    border-radius: 3px;
+}
+
+.side-menu-display {
+    padding: 10px;
+    border: 2px solid transparent;
+    max-width: 100%;
+    cursor: pointer;
+}
+
+.side-menu-display.is-active {
+    border: 2px solid #91cb7f;
+}
+
+.info {
+    margin-top: 8px;
+    padding: 5px;
+    background: #91cb7f;
+    color: #fff;
+    border-radius: var(--border-radius);
+}
+
+#side-menu-section h2 small {
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.side-menu-toggler {
+    cursor: pointer;
+}
+
+.side-menu-setting-list {
+    margin: 10px 4px 4px 0px;
+}
+
+.side-menu-setting-list-item {
+    padding: 5px 10px;
+    border: 1px solid var(--color-border-dark);
+    max-width: 300px;
+    margin: -1px 0 0 0;
+    cursor: pointer;
+}
+
+.side-menu-setting.arrow {
+    color: #ccc;
+    padding-right: 5px;
+}
+
+.side-menu-setting-list-item input {
+    min-height: auto;
+    margin-top: -1px;
+}
+
+
+.side-menu-setting-table {
+    display: table;
+    width: 100%;
+}
+
+.side-menu-setting-row {
+    display: table;
+}
+
+.side-menu-setting-label {
+    display: table-cell;
+    width: 400px;
+    padding-right: 20px;
+}
+
+.side-menu-setting-form {
+    display: table-cell;
+    width: 300px;
+}
+
+.aaochat-setting-extra-fields.hide {
+    display: none;
+}
+.aaochat-setting-extra-fields.show {
+    display: block;
+}
+.aaochat-setting-extra-fields input {
+    background-color: #e9e9e9;
+}
+#aaochat-lead .side-menu-setting-table input:read-only {
+    background-color: #e9e9e9;
+}
+.aaochat_lead_status_msg_container {
+    margin-top:10px;
+}
+#aaochat_lead_status_msg {
+    color: #084d12;
+}

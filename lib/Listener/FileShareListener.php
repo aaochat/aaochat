@@ -1,0 +1,171 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @copyright Copyright (c) 2020, Georg Ehrke
+ *
+ * @license GNU AGPL version 3 or any later version
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+namespace OCA\AaoChat\Listener;
+
+
+use OCP\EventDispatcher\Event;
+use OCP\EventDispatcher\IEventListener;
+use OCP\Share\Events\ShareCreatedEvent;
+use OCP\IUserManager;
+use OCP\IUser;
+use OCP\IUserSession;
+use OCA\AaoChat\Service\AaochatService;
+use OCP\IConfig;
+use OCP\Share\IManager;
+use OCP\Share\IShare;
+
+/**
+ * Class FileShareListener
+ *
+ * @package OCA\AaoChat\Listener
+ */
+class FileShareListener implements IEventListener {
+
+    /**
+     * @var OC\AllConfig
+     */
+    protected $config;
+
+    private $aaochatService;
+
+    /** @var IManager */
+    private $shareManager;
+
+    public function __construct(AaochatService $aaochatService, IManager $shareManager) {
+        $this->aaochatService = $aaochatService;
+        $this->shareManager = $shareManager;
+    }
+
+	/**
+	 * @inheritDoc
+	 */
+	public function handle(Event $event): void {
+		if (!($event instanceof ShareCreatedEvent)) {
+			// Unrelated
+			return;
+		}
+        $response = array();
+        $shareInfo = array();
+        $share = $event->getShare();
+        $sharedNode = $share->getNode();
+        $fileInfo = $sharedNode->getFileInfo();
+        //$fileData     = $fileInfo->getData();
+        $filePath     = $fileInfo->getPath();
+        //$nodePath = $sharedNode->getPath();
+
+        $fileId = $share->getNodeId();
+        if(empty($fileId)) {
+            $fileId = $fileInfo->getId();
+        }
+        $fileType = $share->getNodeType();
+        $shareWith = $share->getSharedWith();
+        $shareDisplayName = $share->getSharedWithDisplayName();
+        $permissions = $share->getPermissions();
+        $shareBy = $share->getSharedBy();
+        $shareOwner = $share->getShareOwner();
+        $target = $share->getTarget();
+        $sharedFilePath = \OC\Files\Filesystem::getPath($fileId);
+        $fileOwner = \OC\Files\Filesystem::getOwner($sharedFilePath);
+
+        $aaochatGroup = $this->aaochatService->getAaochatGroup($fileId);
+        $aaochatGroup = json_decode($aaochatGroup,true);
+        if(isset($aaochatGroup['status']) && $aaochatGroup['status']=='success') {
+
+            /*
+            $shareData = array();
+            $shareData['fileId'] = $fileId;
+            $shareData['fileType'] = $fileType;
+            $shareData['shareWith'] = $shareWith;
+            $shareData['shareDisplayName'] = $shareDisplayName;
+            $shareData['permissions'] = $permissions;
+            $shareData['shareBy'] = $shareBy;
+            $shareData['shareOwner'] = $shareOwner;
+            $shareData['target'] = $target;
+            */
+
+            $shareInfo = array();
+            $shareInfo['objectId'] = $fileId;
+            $shareInfo['objectName'] = trim($target,"/");
+            $shareInfo['objectType'] = $fileType;
+            $shareInfo['filePath'] = $sharedFilePath;
+            $shareInfo['creator'] = $fileOwner;
+            
+
+            $shareUserInfo = array();
+            $dir_path = $sharedFilePath;
+            $userid = \OC_User::getUser();
+            $userhome = \OC_User::getHome($userid);
+            //$shareInfo['userid'] = $userid;
+            if (\OC\Files\Filesystem::file_exists($dir_path)) {
+                //$shareInfo['dir_path'] = $dir_path;
+                            
+                /*
+                $sharedData = $this->aaochatService->getShareData(array('path'=>$dir_path));
+                //$shareInfo['sharedData'] = $sharedData;
+                if(isset($sharedData['status']) && $sharedData['status']=='success') {
+                    if(isset($sharedData['data']) && !empty($sharedData['data'])) {
+                        foreach ($sharedData['data'] as $key => $sharedUserInfo) {
+                            $id = $sharedUserInfo['id'];
+                            $shared_with = $sharedUserInfo['share_with'];
+                            $shared_permissions = $sharedUserInfo['permissions'];
+                            if(empty($shared_with)) {
+                                $shared_with = $sharedUserInfo['uid_owner'];
+                            }
+
+                            $shareUserInfo[$shared_with]['id'] = $id;
+                            $shareUserInfo[$shared_with]['shared_with'] = $shared_with;
+                            $shareUserInfo[$shared_with]['permissions'] = $shared_permissions;
+                        }
+                    }
+                }
+                */
+                            
+                
+                $sharedData = $this->shareManager->getAccessList($sharedNode,false);
+                //$shareInfo['sharedData'] = $sharedData;
+                if(isset($sharedData['users']) && !empty($sharedData['users'])) {
+                    foreach ($sharedData['users'] as $key => $sharedUserInfo) {
+                        $shareUserInfo[$sharedUserInfo]['id'] = $sharedUserInfo;
+                        $shareUserInfo[$sharedUserInfo]['permissions'] = 1;
+                    }
+                }
+                
+            }
+            $shareInfo['shareInfo'] = $shareUserInfo;
+
+            $response = $this->aaochatService->manageGroupToAaochat($shareInfo);
+
+            //$response = $this->aaochatService->sendWebhookData('addInGroup',$shareData);
+        }
+        $shareInfo['aaochatGroup'] = $aaochatGroup;
+        $shareInfo['manage_group_response'] = $response;
+
+        if($this->aaochatService->isAaochatApiLogEnable()) {
+            $aaochat_log_dir = $this->aaochatService->getAaochatLogPath();
+            $shareData = json_encode($shareInfo);
+            $myfile = file_put_contents($aaochat_log_dir.'share_created.txt', $shareData.PHP_EOL , FILE_APPEND | LOCK_EX);
+        }
+	}
+
+}
