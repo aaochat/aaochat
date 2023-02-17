@@ -20,20 +20,20 @@ $(document).ready(function () {
       var newTabs = [];
       var detailTabs = OCA.Files.Sidebar.state.tabs;
       
-      setTimeout(function(){
-        /*
-        $(detailTabs).each(function( index, detailTab ) {
-          if(detailTab.id != 'versionsTabView') {
-            newTabs.push(detailTab);
-          }     
-        });
+      // setTimeout(function(){
+      //   /*
+      //   $(detailTabs).each(function( index, detailTab ) {
+      //     if(detailTab.id != 'versionsTabView') {
+      //       newTabs.push(detailTab);
+      //     }     
+      //   });
 
-        OCA.Files.Sidebar.state.tabs = newTabs;
-        */
-        fileList.registerTabView(new OCA.Aaochattab.AaochatTabView('AaochatTabView', {order:-51}));
-        window.isLoadedAaochatPlugin =  true;
+      //   OCA.Files.Sidebar.state.tabs = newTabs;
+      //   */
+      //   fileList.registerTabView(new OCA.Aaochattab.AaochatTabView('AaochatTabView', {order:-51}));
+      //   window.isLoadedAaochatPlugin =  true;
 
-      }, 500);
+      // }, 500);
 
     }
   };
@@ -43,6 +43,7 @@ $(document).ready(function () {
     if( window.isLoadedAaochatPlugin==false){
       console.log(OC.Plugins._plugins);
       OC.Plugins.register('OCA.Files.FileList', OCA.Aaochattab.Util);
+      OCA.Files.FileList.prototype.registerTabView(new OCA.Aaochattab.AaochatTabView('AaochatTabView', {order:-51}))
     }
   },1000);
 
