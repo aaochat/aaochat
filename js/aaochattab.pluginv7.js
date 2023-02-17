@@ -16,6 +16,8 @@ $(document).ready(function () {
      * @param {OCA.Files.FileList} fileList file list to be extended
      */
     attach: function(fileList) {
+
+      console.log(fileList);
       
       var newTabs = [];
       var detailTabs = OCA.Files.Sidebar.state.tabs;
