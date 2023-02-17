@@ -49,4 +49,4 @@ $(document).ready(function () {
 
 });
 
-OC.Plugins.register('OCA.Files.Aaochat', OCA.Aaochattab.Util)
+// OC.Plugins.register('OCA.Files.Aaochat', OCA.Aaochattab.Util)
