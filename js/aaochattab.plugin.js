@@ -1,4 +1,7 @@
-(function() {
+$(document).ready(function () {
+
+  window.isLoadedAaochatPlugin = false;
+
 
   OCA.Aaochattab = OCA.Aaochattab || {};
 
@@ -33,12 +36,19 @@
         */
         console.log('aaochat-tab registerTabView called');
         fileList.registerTabView(new OCA.Aaochattab.AaochatTabView('AaochatTabView', {order:-51}));
+        window.isLoadedAaochatPlugin =  true;
 
       }, 500);
 
     }
   };
-})();
 
-OC.Plugins.register('OCA.Files.FileList', OCA.Aaochattab.Util);
+
+  setInterval(function(){
+    if( window.isLoadedAaochatPlugin==false){
+      OC.Plugins.register('OCA.Files.FileList', OCA.Aaochattab.Util);
+    }
+  },500);
+  
+});
 
