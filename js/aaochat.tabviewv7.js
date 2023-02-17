@@ -18,6 +18,7 @@ $(document).ready(function () {
         aaochtChannel: [],
         WebSocketObj: null,
         aaochtMessages: [],
+        enabled: true,
         aaochtRootUser: [],
         aaochtChannelMessageCount:0,
         aaochtChannelMessageCounter:0,
