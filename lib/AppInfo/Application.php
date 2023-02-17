@@ -236,7 +236,7 @@ class Application extends App implements IBootstrap {
             if($this->isLicenseValid === 'yes') {
                 Util::addScript(self::APP_ID, 'authkey');
                 Util::addScript(self::APP_ID, 'aaochat.tabview'.self::APP_VERSION);
-                Util::addScript(self::APP_ID, 'aaochattab.plugin');
+                Util::addScript(self::APP_ID, 'aaochattab.plugin'.self::APP_VERSION);
             }
             Util::addStyle(self::APP_ID, 'aaochat');
             Util::addStyle(self::APP_ID, 'aaochat-icons');
