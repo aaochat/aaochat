@@ -27,6 +27,7 @@ use OCA\Files\Event\LoadSidebar;
 use OCA\AaoChat\AppInfo\Application;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
+use OCP\IConfig;
 use OCP\Util;
 
 class LoadSidebarListener implements IEventListener {
@@ -35,8 +36,19 @@ class LoadSidebarListener implements IEventListener {
 			return;
 		}
 
-		// TODO: make sure to only include the sidebar script when
-		// we properly split it between files list and sidebar
-		Util::addScript(Application::APP_ID, 'aaochat.tabview'.Application::APP_VERSION);
+		$config = \OC::$server[IConfig::class];
+		$isLicenseValid = $config->getAppValue(Application::APP_ID, 'aaochat_is_license_valid', '');
+
+		if($isLicenseValid === 'yes') {
+			Util::addScript(Application::APP_ID, 'authkey');
+			// TODO: make sure to only include the sidebar script when
+			// we properly split it between files list and sidebar
+			Util::addScript(Application::APP_ID, 'aaochat.tabview'.Application::APP_VERSION);
+		}
+
+		Util::addStyle(Application::APP_ID, 'aaochat');
+		Util::addStyle(Application::APP_ID, 'aaochat-icons');
+		Util::addStyle(Application::APP_ID, 'emoji');
+		Util::addStyle(Application::APP_ID, 'jquery.fancybox');
 	}
 }

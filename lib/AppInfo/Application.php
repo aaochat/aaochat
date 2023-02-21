@@ -61,7 +61,7 @@ use OC\Files\Node\File;
 class Application extends App implements IBootstrap {
 
     public const APP_ID = 'aaochat';
-    public const APP_VERSION = 'v9';
+    public const APP_VERSION = 'v10';
 
     public const APP_NAME = 'Aao Chat';
     /**
@@ -232,17 +232,22 @@ class Application extends App implements IBootstrap {
         Util::addScript(self::APP_ID, 'adminsetting');
         Util::addScript(self::APP_ID, 'script');
 
+        /*
 		$server->getEventDispatcher()->addListener('\OCP\Collaboration\Resources::loadAdditionalScripts', function () {
+            //Using direct as $this->isLicenseValid not loading in dashboard
+            //$isLicenseValid = $this->config->getAppValue(Application::APP_ID, 'aaochat_is_license_valid', '');
+
             if($this->isLicenseValid === 'yes') {
                 Util::addScript(self::APP_ID, 'authkey');
-                Util::addScript(self::APP_ID, 'aaochat.tabview'.self::APP_VERSION);
-                Util::addScript(self::APP_ID, 'aaochattab.plugin'.self::APP_VERSION);
+                //Util::addScript(self::APP_ID, 'aaochat.tabview'.self::APP_VERSION);
+                //Util::addScript(self::APP_ID, 'aaochattab.plugin'.self::APP_VERSION);
             }
             Util::addStyle(self::APP_ID, 'aaochat');
             Util::addStyle(self::APP_ID, 'aaochat-icons');
             Util::addStyle(self::APP_ID, 'emoji');
             Util::addStyle(self::APP_ID, 'jquery.fancybox');
 		});
+        */
 	}
 
     
@@ -332,8 +337,8 @@ class Application extends App implements IBootstrap {
         /**
 		 * Register Events
 		*/
-            // $context->registerEventListener(LoadAdditionalScriptsEvent::class, LoadAdditionalListener::class);
-            // $context->registerEventListener(LoadSidebar::class, LoadSidebarListener::class);
+        $context->registerEventListener(LoadAdditionalScriptsEvent::class, LoadAdditionalListener::class);
+        $context->registerEventListener(LoadSidebar::class, LoadSidebarListener::class);
     }
 
     public function redirectToSettingPage()
