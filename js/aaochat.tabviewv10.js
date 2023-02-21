@@ -49,9 +49,12 @@ $(document).ready(function () {
       AaochatSidebarView.aochat_tab_loader_html= '';
       AaochatSidebarView.previousAaochtMessageDate='';
       AaochatSidebarView.displayAaochtMessageDate='';
-        AaochatSidebarView.chatMessageLoading= false; 
-        AaochatSidebarView.chatMessageMenuIsOpen= false;  
-        AaochatSidebarView.events= {
+      AaochatSidebarView.chatMessageLoading= false; 
+      AaochatSidebarView.chatMessageMenuIsOpen= false;
+
+       
+      /*
+      AaochatSidebarView.events= {
           "click .aaochat-start-conversion a": "_onClickStartConversion",
           "keydown #txtMessage": "_onEnterSendMessage",
           "click .aaochat-send-message-btn": "_onClickSendMessage",
@@ -69,6 +72,58 @@ $(document).ready(function () {
           "click .close-message-send-option-btn":"closeOptionSendMenu",
           "click .aaochat-msg-block .reply-message":"scrollToReply",
         };
+        */
+        $('#tab-aaochatTabView').on('click', '.aaochat-start-conversion a', function () {
+          AaochatSidebarView._onClickStartConversion();
+        });
+        $('#tab-aaochatTabView').on('keydown', '#txtMessage', function () {
+          AaochatSidebarView._onEnterSendMessage();
+        });
+        $('#tab-aaochatTabView').on('click', '.aaochat-send-message-btn', function () {
+          AaochatSidebarView._onClickSendMessage();
+        });
+        $('#tab-aaochatTabView').on('click', '.open-message-send-option-btn', function () {
+          AaochatSidebarView.openOptionSendMenu();
+        });
+        $('#tab-aaochatTabView').on('click', '.close-message-send-option-btn', function () {
+          AaochatSidebarView._onClickStartConversion();
+        });
+        $('#tab-aaochatTabView').on('click', '.aaochat-msg-block .reply-message', function () {
+          AaochatSidebarView.scrollToReply();
+        });
+
+        /*
+        $('#tab-aaochatTabView').on('click', '.aaocchat-dropdown-menu-left-side-open .replyMessageAction a', function () {
+          AaochatSidebarView.replyMessage();
+        });
+        $('#tab-aaochatTabView').on('click', '.aaocchat-dropdown-menu-left-side-open .replyPrivatelyAction a', function () {
+          AaochatSidebarView.replyPrivately();
+        });
+        $('#tab-aaochatTabView').on('click', '.aaocchat-dropdown-menu-left-side-open .forwardMessageAction a', function () {
+          AaochatSidebarView.forwardMessage();
+        });
+        $('#tab-aaochatTabView').on('click', '.aaocchat-dropdown-menu-left-side-open .starMessageWithTagAction a', function () {
+          AaochatSidebarView.starMessageWithTag();
+        });
+        $('#tab-aaochatTabView').on('click', '.aaocchat-dropdown-menu-left-side-open .copyMessageAction a', function () {
+          AaochatSidebarView.copyMessage();
+        });
+        $('#tab-aaochatTabView').on('click', '.aaocchat-dropdown-menu-left-side-open .downloadAttachmentAction a', function () {
+          AaochatSidebarView.downloadAttachment();
+        });
+        $('#tab-aaochatTabView').on('click', '.aaocchat-dropdown-menu-left-side-open .viewMessageStatisticAction a', function () {
+          AaochatSidebarView.viewMessageStatistic();
+        });
+        $('#tab-aaochatTabView').on('click', '.aaocchat-dropdown-menu-left-side-open .setReminderAction a', function () {
+          AaochatSidebarView.setReminder();
+        });
+        $('#tab-aaochatTabView').on('click', '.aaocchat-dropdown-menu-left-side-open .deleteMessageAction a', function () {
+          AaochatSidebarView.deleteMessage();
+        });
+        $('#tab-aaochatTabView').on('click', '.aaocchat-dropdown-menu-left-side-open .deleteMessageForMeAction a', function () {
+          AaochatSidebarView.deleteMessageForMe();
+        });
+        */
 
         /**
          * Tab label
@@ -394,10 +449,12 @@ $(document).ready(function () {
          AaochatSidebarView.startConversionDisplay= ($el, responseData) => {
           var self = AaochatSidebarView;
 
-          var aaochatHtml = '<div class="aaochat-start-conversion">';
+          var aaochatHtml = '<div id="'+AaochatSidebarView.id+'" class="'+AaochatSidebarView.className+'">';
+          aaochatHtml += '<div class="aaochat-start-conversion">';
           aaochatHtml += '<span><a href="javascript::void()" class="">';
           aaochatHtml += 'Start Conversation';
           aaochatHtml += '</a></span>';
+          aaochatHtml += '</div>';
           aaochatHtml += '</div>';
           
 
@@ -448,7 +505,7 @@ $(document).ready(function () {
           var u = OC.getCurrentUser();        
           var postdata = {channel_id:self.channelId};
           var headers = {"Authorization": authKey,'content-type':'application/json'}
-          var api_url = aaoChatServerURL+'/api/channel/messages';
+          var api_url = aaoChatServerURL+'/api/channel/messages?fetch_notification_messages=false';
 
         fetch(api_url, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -489,7 +546,7 @@ $(document).ready(function () {
           var u = OC.getCurrentUser();        
           var postdata = {channel_id:self.channelId,message_id:message_id};
           var headers = {"Authorization": authKey,'content-type':'application/json'}
-          var api_url = aaoChatServerURL+'/api/channel/messages';
+          var api_url = aaoChatServerURL+'/api/channel/messages?fetch_notification_messages=false';
           
         fetch(api_url, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -542,7 +599,7 @@ $(document).ready(function () {
           var u = OC.getCurrentUser();        
           var postdata = {channel_id:self.channelId,user_id:u.uid,timestamp:msg_timestamp};
           var headers = {"Authorization": authKey,'content-type':'application/json'}
-          var api_url = aaoChatServerURL+'/api/channel/messages/after-timestamp';
+          var api_url = aaoChatServerURL+'/api/channel/messages/after-timestamp?fetch_notification_messages=false';
           
         fetch(api_url, {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -572,7 +629,7 @@ $(document).ready(function () {
                   }
                 }
               });
-              console.log('call from getChannelMessagesByTimestamp');
+              //console.log('call from getChannelMessagesByTimestamp');
               self.updateChatMessagesDisplayByTimestamp({status:"success",messages:self.aaochtMessages.messages}, message_id);
             }
           }).catch(function(err){
@@ -652,7 +709,7 @@ $(document).ready(function () {
           var u = OC.getCurrentUser();        
           var postdata = {channel_id:self.channelId};
           var headers = {"Authorization": authKey}
-          var api_url = aaoChatServerURL+'/api/channel/messages';
+          var api_url = aaoChatServerURL+'/api/channel/messages?fetch_notification_messages=false';
 
           $.ajax({
               url: api_url,
@@ -684,6 +741,7 @@ $(document).ready(function () {
           });
 
           aaochatHtml = '';
+          aaochatHtml = '<div id="'+self.id+'" class="'+self.className+'">';
           /*
           aaochatHtml = '<div class="header-aaochat">';
           //aaochatHtml += '<i class="icon fa fa-user-o" aria-hidden="true"></i>';
@@ -733,7 +791,7 @@ $(document).ready(function () {
 
           aaochatHtml += '</div>';
           aaochatHtml += '</div>';
-
+          
           aaochatHtml += '<form class="chat-message" onsubmit="return false;">';
           aaochatHtml += '<div class="row aaochat-send-message-row">';
           aaochatHtml += '<div class="col-md-12">';
@@ -787,13 +845,12 @@ $(document).ready(function () {
           aaochatHtml += '</div>';
           aaochatHtml += '</div>';
           aaochatHtml += '</form>';
+          aaochatHtml += '</div>';
 
-          console.log('loadingFileId:'+loadingFileId);
-          console.log('currentFileId:'+self.currentFileId);
+          //console.log('loadingFileId:'+loadingFileId);
+          //console.log('currentFileId:'+self.currentFileId);
 
           if(loadingFileId == self.currentFileId) {
-            console.log($el);
-            console.log(aaochatHtml);
             $($el).html(aaochatHtml);
           }
 
@@ -899,7 +956,7 @@ $(document).ready(function () {
          */
          AaochatSidebarView.updateChatHistoryDisplay= async ($el, responseData, loadingFileId) => {
           var self = AaochatSidebarView;
-          consosle.log('in updateChatHistoryDisplay');
+
           var u = OC.getCurrentUser();
           var aaochatHtml = '';
           if(typeof responseData != 'undefined' && responseData != '[]') {
@@ -1138,7 +1195,6 @@ $(document).ready(function () {
           var self = AaochatSidebarView;
           var u = OC.getCurrentUser();
 
-          //console.log('in prepareAaochatHTML');
           var authKey = '';
           var aaoChatServerURL = '';
           var aaoChatFileServerURL = '';
@@ -1203,8 +1259,6 @@ $(document).ready(function () {
           if(responseMessage.seen) {
             msgSeenClass = 'icon-double-tick-icon seen-msg';
           }
-
-          //console.log('in prepareAaochatHTML start preparing HTML');
 
           if(aaochatMessage == '') {
             if (attachments.length !== 0) {
@@ -1341,9 +1395,9 @@ $(document).ready(function () {
               }
               self.previousAaochtMessageDate = formatedLogDate;
               
-              console.log(self.displayAaochtMessageDate);
-              console.log(responseMessage.message_id);
-              console.log(self.aaochtMessagesDates);
+              //console.log(self.displayAaochtMessageDate);
+              //console.log(responseMessage.message_id);
+              //console.log(self.aaochtMessagesDates);
                 
               if(self.displayAaochtMessageDate != '') {
                 aaochatMessageHtml += '<div class="notification-message alert alert-info">'+self.displayAaochtMessageDate+'</div>';  
@@ -1508,10 +1562,10 @@ $(document).ready(function () {
               }
           //}
 
-            console.log('aaochtChannelMessageCount:'+self.aaochtChannelMessageCount);
-            console.log('aaochtChannelMessageCounter:'+self.aaochtChannelMessageCounter);
+            //console.log('aaochtChannelMessageCount:'+self.aaochtChannelMessageCount);
+            //console.log('aaochtChannelMessageCounter:'+self.aaochtChannelMessageCounter);
             if(self.aaochtChannelMessageCount == self.aaochtChannelMessageCounter) {
-              console.log('same counter ===');
+              //console.log('same counter ===');
               //self.displayAaochtMessageDate = self.previousAaochtMessageDate;
               //if(self.displayAaochtMessageDate != '') {
                 aaochatMessageHtml += '<div class="notification-message alert alert-info">'+self.previousAaochtMessageDate+'</div>';  
