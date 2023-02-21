@@ -37,7 +37,7 @@ use OCP\Security\ICredentialsManager;
 use OCP\Authentication\LoginCredentials\IStore;
 use OCP\IUserSession;
 use OCA\AaoChat\Service\ConfigProxy;
-
+use OCA\AaoChat\Exception\ApiSeerverException;
 
 /**
  * Class UserLoggedInListener
@@ -89,50 +89,55 @@ class UserLoggedInListener implements IEventListener {
         $userData['avatar_image'] = $avatarImage;
         //$userData['password'] = $password;
 
-        //$credentials = $this->credentialStore->getLoginCredentials();
-        //$userName = $credentials->getLoginName();
-        //$password = $credentials->getPassword();
-        //$userData['credentials'] = $credentials;
+        try {
 
-        $authBase = base64_encode($userName.':'.$password);
-        $userToken = $this->apiAuthService->generateAuthToken($userName, $userEmail);
-        $userData['token'] = $userToken;
-        if($this->apiAuthMapper->isApiUserExists($userName)) {
-            $res= $this->apiAuthMapper->updateApiAuth($userName, $authBase, $userToken);
-        } else {
-            $apiauth = new Apiauth();
-            $apiauth->setUserId($userName);
-            $apiauth->setAuthBase($authBase);
-            $apiauth->setAuthToken($userToken);
-            $apiauth->setTimestamp(time());
-            $res = $this->apiAuthMapper->insert($apiauth);
+            $authBase = base64_encode($userName.':'.$password);
+            $userToken = $this->apiAuthService->generateAuthToken($userName, $userEmail);
+            $userData['token'] = $userToken;
+            if($this->apiAuthMapper->isApiUserExists($userName)) {
+                $res= $this->apiAuthMapper->updateApiAuth($userName, $authBase, $userToken);
+            } else {
+                $apiauth = new Apiauth();
+                $apiauth->setUserId($userName);
+                $apiauth->setAuthBase($authBase);
+                $apiauth->setAuthToken($userToken);
+                $apiauth->setTimestamp(time());
+                $res = $this->apiAuthMapper->insert($apiauth);
+            }
+
+            $aaochatUserToken = '"123"';
+            $response = $this->aaochatService->sendUserdataToAaochat($userData);
+            if(!empty($response)) {
+                $response = json_decode($response);
+            }
+            if(isset($response->status) && $response->status=='success') {
+                $responseData = $response->data;
+                $aaochatUserToken = '"'.$responseData->auth_key.'"';
+
+                $this->apiAuthMapper->updateAuthKey($userName, $responseData->auth_key);
+            }
+            $aaochatServerUrl = $this->aaochatService->getAaochatServerUrl();
+            $aaochatFileServerUrl = $this->aaochatService->getAaochatFileServerUrl();
+
+            unset($_COOKIE['ncUserAuthKey']);
+            setcookie('ncUserAuthKey', $aaochatUserToken, time() + 3600000*24*7, '/');
+
+            unset($_COOKIE['aaochatServerUrl']);
+            setcookie('aaochatServerUrl', $aaochatServerUrl, time() + 3600000*24*7, '/');
+
+            unset($_COOKIE['aaochatFileServerUrl']);
+            setcookie('aaochatFileServerUrl', $aaochatFileServerUrl, time() + 3600000*24*7, '/');
+                
+            if($this->aaochatService->isAaochatApiLogEnable()) {
+                $aaochat_log_dir = $this->aaochatService->getAaochatLogPath();
+                if(!empty($userData)) {
+                    $userData = json_encode($userData);
+                }
+                $myfile = file_put_contents($aaochat_log_dir.'user_loggedin.txt', $userData.PHP_EOL , FILE_APPEND | LOCK_EX);
+            }
         }
-
-        $aaochatUserToken = '"123"';
-        $response = $this->aaochatService->sendUserdataToAaochat($userData);
-
-        //$userData = json_encode($response);
-        //$myfile = file_put_contents('/var/www/html/nextcloud_23/data/user_loggedin.txt', $userData.PHP_EOL , FILE_APPEND | LOCK_EX);
-        $response = json_decode($response);
-        if(isset($response->status) && $response->status=='success') {
-            $responseData = $response->data;
-            $aaochatUserToken = '"'.$responseData->auth_key.'"';
-
-            $this->apiAuthMapper->updateAuthKey($userName, $responseData->auth_key);
+        catch(ApiSeerverException $e) {
+           
         }
-        $aaochatServerUrl = $this->aaochatService->getAaochatServerUrl();
-        $aaochatFileServerUrl = $this->aaochatService->getAaochatFileServerUrl();
-
-        unset($_COOKIE['ncUserAuthKey']);
-        setcookie('ncUserAuthKey', $aaochatUserToken, time() + 3600000*24*7, '/');
-
-        unset($_COOKIE['aaochatServerUrl']);
-        setcookie('aaochatServerUrl', $aaochatServerUrl, time() + 3600000*24*7, '/');
-
-        unset($_COOKIE['aaochatFileServerUrl']);
-        setcookie('aaochatFileServerUrl', $aaochatFileServerUrl, time() + 3600000*24*7, '/');
-              
-		//$userData = json_encode($userData);
-        //$myfile = file_put_contents('/var/www/html/nextcloud_23/data/user_loggedin.txt', $userData.PHP_EOL , FILE_APPEND | LOCK_EX);
 	}
 }
