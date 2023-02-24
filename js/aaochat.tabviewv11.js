@@ -275,7 +275,7 @@ $(document).ready(function () {
                 /*self.WebSocketObj.send('42' + JSON.stringify(['user:connect', {
                       auth_key: authKey
                   }]));*/
-                  console.log('call from reconnect interval.');
+
                   //Reinitilize messages dates
                   self.aaochtMessagesDates = [];
                   self.previousAaochtMessageDate = '';
@@ -439,13 +439,10 @@ $(document).ready(function () {
             body: JSON.stringify(postdata) // body data type must match "Content-Type" header
           }).then(async function(response){
             var responseJson = await response.json();
-            console.log(responseJson);
 
             if(loadType == 'view') {
-              //console.log('loading view');
               self.updateDisplay(self.$el, responseJson, loadingFileId);
             } else if(loadType == 'messages') {
-              //console.log('loading messages');
               self.updateChatHistoryDisplay(self.$el, responseJson, loadingFileId);
             }
 
@@ -457,7 +454,6 @@ $(document).ready(function () {
         },
         getChannelMessageHistory: async function (message_id) {
           var self = this;
-          //console.log('in getChannelMessageHistory');
           var authKey = '';
           var aaoChatServerURL = '';
           if (typeof(Storage) !== "undefined") {
@@ -498,8 +494,7 @@ $(document).ready(function () {
                   }
                 }
               });
-              //console.log(self.aaochtMessagesDates);
-              //console.log(self.aaochtMessages.messages);
+
               self.updateChatMessageHistoryDisplay({status:"success",messages:self.aaochtMessages.messages}, false, true);
             }
           }).catch(function(err){
@@ -510,7 +505,6 @@ $(document).ready(function () {
         getChannelMessagesByTimestamp: async function (msg_timestamp, message_id) {
           var self = this;
           self.clearDateVars();
-          console.log('in getChannelMessagesByTimestamp');
           var authKey = '';
           var aaoChatServerURL = '';
           if (typeof(Storage) !== "undefined") {
@@ -533,10 +527,10 @@ $(document).ready(function () {
             body: JSON.stringify(postdata) // body data type must match "Content-Type" header
           }).then(async function(response){
             var responseData = await response.json();
-            console.log(responseData);
+
             if(responseData.status == "success") {
               var responseMessages = responseData.messages;
-              console.log(responseMessages);
+
               $(responseMessages).each(function( index, responseMessage ) {
                 if(responseMessage.channel_id == self.channelId) {
                   var messageid = responseMessage.message_id;
@@ -551,7 +545,7 @@ $(document).ready(function () {
                   }
                 }
               });
-              console.log('call from getChannelMessagesByTimestamp');
+
               self.updateChatMessagesDisplayByTimestamp({status:"success",messages:self.aaochtMessages.messages}, message_id);
             }
           }).catch(function(err){
@@ -825,12 +819,8 @@ $(document).ready(function () {
                 windowChatWrapperTop = parseInt(windowChatWrapperTop);
                 var chatWindowTop = $("#chat-history-top").offset().top;//$("#chat-history-top").scrollTop();
                 var windowScreenHeight = window.screen.availHeight;
-                //console.log('window screen height 1:'+windowScreenHeight);
-                //console.log('window chat wrapper top 1:'+(windowChatWrapperTop));
-                //console.log('scroll wrapper top 1:'+(chatMessageListContainerTop));
 
                 var chatWindowTopDiff = parseInt(chatMessageListContainerTop-windowChatWrapperTop);
-                //console.log('chat window top diff 1:'+chatWindowTopDiff);
 
                 var st = $(this).scrollTop();
                 if (st > lastScrollTop){
@@ -842,11 +832,10 @@ $(document).ready(function () {
                     (chatMessageListContainerTop == windowChatWrapperTop && chatWindowTopDiff == 0 && self.chatMessageLoading == false) ||
                     (chatWindowTopDiff == 1 && self.chatMessageLoading == false)
                   ){
-                    //console.log('load new messages');
                     
                     self.chatMessageLoading = true;
                     var cat_last_element_id = $(this).find('.aaochat-msg-block').last().attr('id');
-                    console.log('older message id:'+cat_last_element_id);
+                    //console.log('older message id:'+cat_last_element_id);
                     if(typeof cat_last_element_id != 'undefined') {
                       self._showLoader();
                       //Reinitilize messages dates
@@ -1077,7 +1066,6 @@ $(document).ready(function () {
             self.chatMessageLoading = false;
 
             if($("#message-"+message_id).length > 0) {
-              console.log('scroll to original message');
               /*$('#chat-history-wrapper').animate({
                 scrollTop: $("#message-"+message_id).offset().top
               }, 500);*/
@@ -1112,7 +1100,6 @@ $(document).ready(function () {
           var self = this;
           var u = OC.getCurrentUser();
 
-          //console.log('in prepareAaochatHTML');
           var authKey = '';
           var aaoChatServerURL = '';
           var aaoChatFileServerURL = '';
@@ -1177,8 +1164,6 @@ $(document).ready(function () {
           if(responseMessage.seen) {
             msgSeenClass = 'icon-double-tick-icon seen-msg';
           }
-
-          //console.log('in prepareAaochatHTML start preparing HTML');
 
           if(aaochatMessage == '') {
             if (attachments.length !== 0) {
@@ -1314,11 +1299,7 @@ $(document).ready(function () {
                 self.aaochtMessagesDates.push(formatedLogDate);
               }
               self.previousAaochtMessageDate = formatedLogDate;
-              
-              console.log(self.displayAaochtMessageDate);
-              console.log(responseMessage.message_id);
-              console.log(self.aaochtMessagesDates);
-                
+                              
               if(self.displayAaochtMessageDate != '') {
                 aaochatMessageHtml += '<div class="notification-message alert alert-info">'+self.displayAaochtMessageDate+'</div>';  
               }
@@ -1482,10 +1463,10 @@ $(document).ready(function () {
               }
           //}
 
-            console.log('aaochtChannelMessageCount:'+self.aaochtChannelMessageCount);
-            console.log('aaochtChannelMessageCounter:'+self.aaochtChannelMessageCounter);
+            //console.log('aaochtChannelMessageCount:'+self.aaochtChannelMessageCount);
+            //console.log('aaochtChannelMessageCounter:'+self.aaochtChannelMessageCounter);
             if(self.aaochtChannelMessageCount == self.aaochtChannelMessageCounter) {
-              console.log('same counter ===');
+              //console.log('same counter ===');
               //self.displayAaochtMessageDate = self.previousAaochtMessageDate;
               //if(self.displayAaochtMessageDate != '') {
                 aaochatMessageHtml += '<div class="notification-message alert alert-info">'+self.previousAaochtMessageDate+'</div>';  
@@ -1556,17 +1537,12 @@ $(document).ready(function () {
 
 
           //$("#message-"+message_id).offset().top
-          //console.log($("#message-"+message_id).length);
           if($("#message-"+message_id).length == 0) {
-            console.log(message_id);
-            console.log(msg_timestamp);
-            console.log('reply clicked on older message');
 
             self.getChannelMessagesByTimestamp(msg_timestamp, message_id);
 
             /*
             if($("#message-"+message_id).length > 0) {
-              console.log('scroll to original message');
               $('#chatMessageListContainer').animate({
                 scrollTop: $("#message-"+message_id).offset().top
               }, 500);
@@ -1574,14 +1550,12 @@ $(document).ready(function () {
             */
             /*if($("#message-"+message_id).length > 0) {
               var destination = $("#message-"+message_id);
-              console.log(destination);
               destination[0].scrollIntoView({
                 behavior: 'smooth'
               });
             }*/
           } else {
             /*var destination = $("#message-"+message_id);
-            console.log(destination);
             destination[0].scrollIntoView({
               behavior: 'smooth'
             });*/
@@ -1770,21 +1744,20 @@ $(document).ready(function () {
       
       OCA.Aaochattab = OCA.Aaochattab || {};
       OCA.Aaochattab.AaochatTabView = AaochatTabView;
-    
-      console.log(AaochatTabView);
+
 
     aaochatTabPluginLoaded = true;
     clearInterval(window.aaochatTabPluginInterval);
-    console.log('aaochat-tabview loader interval cleared');
+    //console.log('aaochat-tabview loader interval cleared');
   }else{
     if(aaochatTabPluginLoaded == true) {
       clearInterval(window.aaochatTabPluginInterval);
-      console.log('aaochat-tabview file object not found',aaochatTabPluginLoaded, OCA.Files);
+      //console.log('aaochat-tabview file object not found',aaochatTabPluginLoaded, OCA.Files);
     }
   }
 
 }
-console.log('aaochat-tabview called function for first time');
+//console.log('aaochat-tabview called function for first time');
 aaochatTabPlugin();
  
   window.aaochatTabPluginInterval = setInterval(aaochatTabPlugin,2000);
