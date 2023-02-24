@@ -2,8 +2,8 @@
 <info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
     <id>aaochat</id>
-    <name>AaoChat Business</name>
-    <summary>AaoChat Business</summary>
+    <name>Aao Business Chat</name>
+    <summary>Aao Business Chat</summary>
     <description><![CDATA[Transform your Team's communication with Aao Business Chat!
 
 This powerful App offers numerous helpful features to make your chats smoother, more engaging, and hassle-free. With Aao Business, you can:
@@ -21,18 +21,21 @@ This powerful App offers numerous helpful features to make your chats smoother, 
 - 🤖 Utilize AI (OCR) to search photos, videos, and documents
 
 Experience Seamless and Efficient Team communication with Aao Business Chat]]></description>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <licence>agpl</licence>
     <author mail="info@aaochat.com" >Aao Chat</author>
     <namespace>AaoChat</namespace>
     <category>tools</category>
     <website>https://aaochat.com/</website>
-    <bugs>https://aaochat.com/</bugs>
+    <repository>https://github.com/aaochat/aaochat</repository>
+    <bugs>https://github.com/aaochat/aaochat/issues</bugs>
+    <documentation>https://github.com/aaochat/aaochat</documentation>
+    <screenshot>https://raw.githubusercontent.com/aaochat/aaochat/master/img/aaochat.gif</screenshot>
     <types>
        <filesystem />
     </types>
     <dependencies>
-        <nextcloud min-version="22" max-version="27"/>
+        <nextcloud min-version="23" max-version="26"/>
     </dependencies>
     <!--
     <navigations>
