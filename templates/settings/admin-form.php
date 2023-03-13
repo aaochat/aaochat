@@ -81,12 +81,12 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                         <span style="color:red;">*</span>
                     </div>
                     <div class="side-menu-setting-form">
-                        <select id="aaochat_lead_phone_contry_code" name="aaochat_lead_phone_contry_code" style="width: 25%; float:left; padding: 5px; margin: 3px 0px;" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?>>
+                        <select id="aaochat_lead_phone_contry_code" name="aaochat_lead_phone_contry_code" style="width: 25%; float:left; padding: 5px; margin: 3px 0px;" <?php echo ($isLeadCreated=='yes')? 'disabled="disabled"': '';?>>
                         <?php
                             $phoneCountryCode = AaochatService::phoneCountryCode();
                             foreach($phoneCountryCode as $countryCode => $phoneCountry) {
                             ?>
-                            <option data-countryCode="<?php echo $$countryCode;?>" value="<?php echo $phoneCountry['code'];?>" <?php if($_['aaochat_lead_country']== $phoneCountry['code']) {?> selected="selected" <?php }?>><?php echo $phoneCountry['code'];?></option>
+                            <option data-countryCode="<?php echo $$countryCode;?>" value="<?php echo $phoneCountry['code'];?>" <?php if($_['aaochat_lead_phone_contry_code']== $phoneCountry['code']) {?> selected="selected" <?php }?>><?php echo $phoneCountry['code'];?></option>
                             <?php
                             }
                         ?>
