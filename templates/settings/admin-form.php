@@ -81,8 +81,17 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                         <span style="color:red;">*</span>
                     </div>
                     <div class="side-menu-setting-form">
-                        <input type="text" placeholder="<?php p($l->t('1')); ?>" class="side-menu-setting" id="aaochat_lead_phone_contry_code" name="aaochat_lead_phone_contry_code" value="<?php echo $_['aaochat_lead_phone_contry_code']; ?>" style="width: 11%; float:left; margin-right: 0;" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?>>
-                        <input type="text" placeholder="<?php p($l->t('Phone Number')); ?>" class="side-menu-setting aaochat_lead_phone" id="aaochat_lead_phone" name="aaochat_lead_phone" value="<?php echo $_['aaochat_lead_phone']; ?>" style="width: 87%; float:left;" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?>>
+                        <select id="aaochat_lead_phone_contry_code" name="aaochat_lead_phone_contry_code" style="width: 25%; float:left; padding: 5px; margin: 3px 0px;" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?>>
+                        <?php
+                            $phoneCountryCode = AaochatService::phoneCountryCode();
+                            foreach($phoneCountryCode as $CountryCode => $phoneCountry) {
+                            ?>
+                            <option value="<?php echo $phoneCountry['code'];?>" <?php if($_['aaochat_lead_country']== $phoneCountry['code']) {?> selected="selected" <?php }?>><?php echo $phoneCountry['code'];?></option>
+                            <?php
+                            }
+                        ?>
+                        </select>
+                        <input type="text" placeholder="<?php p($l->t('Phone Number')); ?>" class="side-menu-setting aaochat_lead_phone" id="aaochat_lead_phone" name="aaochat_lead_phone" value="<?php echo $_['aaochat_lead_phone']; ?>" style="width: 73%; float:left;" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?>>
                     </div>
                 </div>
                 <div class="side-menu-setting-row">
