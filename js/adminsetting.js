@@ -106,7 +106,7 @@ jQuery(document).ready(function(){
 						$('#aaochat_lead_status_msg').html('You will receive the license key in your registered email address within 24 hours. <br/>Once you receive the license key, please enter below and activate it.');
 						$('#aaochat-lead .side-menu-setting-table input').attr('readonly','readonly');
 						$('#aaochat-lead .side-menu-setting-table textarea').attr('textarea','textarea');
-						$('#aaochat-lead .side-menu-setting-table sselect').attr('disabled','disabled');
+						$('#aaochat-lead .side-menu-setting-table select').attr('disabled','disabled');
 						setTimeout(function(){
 							//window.location.reload();
 							$('.aaochat_loader').hide();

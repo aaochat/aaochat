@@ -100,7 +100,7 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                         <span style="color:red;">*</span>
                     </div>
                     <div class="side-menu-setting-form">
-                        <select id="aaochat_lead_country" name="aaochat_lead_country" style="width: 100%; padding: 5px;" <?php echo ($isLeadCreated=='yes')? 'disabled="disabled"': '';?>>
+                        <select id="aaochat_lead_country" name="aaochat_lead_country" style="width: 100%; padding: 5px; margin: 3px 0px;" <?php echo ($isLeadCreated=='yes')? 'disabled="disabled"': '';?>>
                         <?php
                             $countries = AaochatService::getCountries();
                             foreach($countries as $countryIndex => $countryName) {
