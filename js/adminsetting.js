@@ -3,11 +3,15 @@ jQuery(document).ready(function(){
 	$( "#side-menu-lead-create" ).on( "click", function(e) {
 			var aaochat_lead_name = $('#aaochat_lead_name').val();
 			var aaochat_lead_email = $('#aaochat_lead_email').val();
+			var aaochat_lead_phone_contry_code = $('#aaochat_lead_phone_contry_code').val();
 			var aaochat_lead_phone = $('#aaochat_lead_phone').val();
+			var aaochat_lead_country = $('#aaochat_lead_country').val();
 			var aaochat_lead_organization = $('#aaochat_lead_organization').val();
+			var aaochat_lead_organization_address = $('#aaochat_lead_organization_address').val();
+			var aaochat_lead_organization_siteurl = $('#aaochat_lead_organization_siteurl').val();
 			$(this).attr('disabled','disabled');
 			if(aaochat_lead_name == '') {
-				alert('Please enter name');
+				alert('Please enter full name');
 				$(this).removeAttr('disabled','disabled');
 				return false;
 			}
@@ -28,8 +32,20 @@ jQuery(document).ready(function(){
 				}
 			}
 
+			if(aaochat_lead_phone_contry_code == '') {
+				alert('Please enter phone country code');
+				$(this).removeAttr('disabled','disabled');
+				return false;
+			}
+
 			if(aaochat_lead_phone == '') {
 				alert('Please enter phone number');
+				$(this).removeAttr('disabled','disabled');
+				return false;
+			}
+
+			if(aaochat_lead_country == '') {
+				alert('Please enter country');
 				$(this).removeAttr('disabled','disabled');
 				return false;
 			}
@@ -40,14 +56,30 @@ jQuery(document).ready(function(){
 				return false;
 			}
 
+			if(aaochat_lead_organization_address == '') {
+				alert('Please enter organization address');
+				$(this).removeAttr('disabled','disabled');
+				return false;
+			}
+
+			if(aaochat_lead_organization_siteurl == '') {
+				alert('Please enter organization site url');
+				$(this).removeAttr('disabled','disabled');
+				return false;
+			}
+
 			$('.aaochat_loader').show();
 			$.ajax({
 				url: OC.generateUrl('/apps/aaochat/createlead'),
 				type: 'POST',
 				data: { aaochat_lead_name: aaochat_lead_name,
 				aaochat_lead_email: aaochat_lead_email,
+				aaochat_lead_phone_contry_code: aaochat_lead_phone_contry_code,
 				aaochat_lead_phone: aaochat_lead_phone,
-				aaochat_lead_organization: aaochat_lead_organization  },
+				aaochat_lead_country: aaochat_lead_country,
+				aaochat_lead_organization: aaochat_lead_organization,
+				aaochat_lead_organization_address: aaochat_lead_organization_address,
+				aaochat_lead_organization_siteurl: aaochat_lead_organization_siteurl },
 				success: function (lead_response) {
 					
 		    		if( lead_response.status == 'success' )

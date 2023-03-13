@@ -101,19 +101,37 @@ class AaochatSettingController extends Controller
      *
      * @return Response
      */
-    public function createLead($aaochat_lead_name,$aaochat_lead_email,$aaochat_lead_phone,$aaochat_lead_organization)
+    public function createLead($aaochat_lead_name,
+    $aaochat_lead_email,
+    $aaochat_lead_phone_contry_code,
+    $aaochat_lead_phone,
+    $aaochat_lead_country,
+    $aaochat_lead_organization,
+    $aaochat_lead_organization_address,
+    $aaochat_lead_organization_siteurl)
     {
         $response = array();
         $response['status'] = 'error';
         $response['data'] = array();
         $response['message'] = '';
         $isJsonRes = false;
-        if(!empty($aaochat_lead_name) && !empty($aaochat_lead_email) && !empty($aaochat_lead_phone) && !empty($aaochat_lead_organization)) {
+        if(!empty($aaochat_lead_name) && 
+        !empty($aaochat_lead_email) && 
+        !empty($aaochat_lead_phone_contry_code) && 
+        !empty($aaochat_lead_phone) && 
+        !empty($aaochat_lead_country) && 
+        !empty($aaochat_lead_organization) &&
+        !empty($aaochat_lead_organization_address) &&
+        !empty($aaochat_lead_organization_siteurl)) {
             $leadData = array();
             $leadData['name'] = $aaochat_lead_name;
             $leadData['email'] = $aaochat_lead_email;
+            $leadData['countryCode'] = $aaochat_lead_phone_contry_code;
             $leadData['phoneNo'] = $aaochat_lead_phone;
+            $leadData['country'] = $aaochat_lead_country;
             $leadData['organization'] = $aaochat_lead_organization;
+            $leadData['companyAddress'] = $aaochat_lead_organization_address;
+            $leadData['siteUrl'] = $aaochat_lead_organization_siteurl;
             $responseJson = $this->aaochatService->createLead($leadData);
             $response = json_decode($responseJson, true);
             if(isset($response['status']) && $response['status']=='success') {
