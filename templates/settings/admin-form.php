@@ -84,9 +84,9 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                         <select id="aaochat_lead_phone_contry_code" name="aaochat_lead_phone_contry_code" style="width: 25%; float:left; padding: 5px; margin: 3px 0px;" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?>>
                         <?php
                             $phoneCountryCode = AaochatService::phoneCountryCode();
-                            foreach($phoneCountryCode as $CountryCode => $phoneCountry) {
+                            foreach($phoneCountryCode as $countryCode => $phoneCountry) {
                             ?>
-                            <option value="<?php echo $phoneCountry['code'];?>" <?php if($_['aaochat_lead_country']== $phoneCountry['code']) {?> selected="selected" <?php }?>><?php echo $phoneCountry['code'];?></option>
+                            <option data-countryCode="<?php echo $$countryCode;?>" value="<?php echo $phoneCountry['code'];?>" <?php if($_['aaochat_lead_country']== $phoneCountry['code']) {?> selected="selected" <?php }?>><?php echo $phoneCountry['code'];?></option>
                             <?php
                             }
                         ?>
@@ -100,7 +100,7 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                         <span style="color:red;">*</span>
                     </div>
                     <div class="side-menu-setting-form">
-                        <select id="aaochat_lead_country" name="aaochat_lead_country" style="width: 100%;" <?php echo ($isLeadCreated=='yes')? 'disabled="disabled"': '';?>>
+                        <select id="aaochat_lead_country" name="aaochat_lead_country" style="width: 100%; padding: 5px;" <?php echo ($isLeadCreated=='yes')? 'disabled="disabled"': '';?>>
                         <?php
                             $countries = AaochatService::getCountries();
                             foreach($countries as $countryIndex => $countryName) {
