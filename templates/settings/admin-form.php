@@ -101,7 +101,6 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                             }
                         ?>
                         </select>
-                        <input type="text" placeholder="<?php p($l->t('Country')); ?>" class="side-menu-setting" id="aaochat_lead_country" name="aaochat_lead_country" value="<?php echo $_['aaochat_lead_country']; ?>" style="width: 100%;" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?>>
                     </div>
                 </div>
                 <div class="side-menu-setting-row">
