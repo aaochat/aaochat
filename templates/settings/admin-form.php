@@ -119,7 +119,7 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                         <span style="color:red;">*</span>
                     </div>
                     <div class="side-menu-setting-form">
-                        <textarea cols="100" placeholder="<?php p($l->t('Organization Address')); ?>" rows="3" class="side-menu-setting" id="aaochat_lead_organization_address" name="aaochat_lead_organization_address" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?> style="width: 100%;"><?php echo $_['aaochat_lead_organization']; ?></textarea>
+                        <textarea cols="100" placeholder="<?php p($l->t('Organization Address')); ?>" rows="3" class="side-menu-setting" id="aaochat_lead_organization_address" name="aaochat_lead_organization_address" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?> style="width: 100%;"><?php echo $_['aaochat_lead_organization_address']; ?></textarea>
                     </div>
                 </div>
                 <div class="side-menu-setting-row">
