@@ -86,7 +86,7 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                             $phoneCountryCode = AaochatService::phoneCountryCode();
                             foreach($phoneCountryCode as $countryCode => $phoneCountry) {
                             ?>
-                            <option data-countryCode="<?php echo $$countryCode;?>" value="<?php echo $phoneCountry['code'];?>" <?php if($_['aaochat_lead_phone_contry_code']== $phoneCountry['code']) {?> selected="selected" <?php }?>><?php echo $phoneCountry['code'];?></option>
+                            <option data-countryCode="<?php echo $countryCode;?>" value="<?php echo $phoneCountry['code'];?>" <?php if($_['aaochat_lead_phone_contry_code']== $phoneCountry['code']) {?> selected="selected" <?php }?>><?php echo $phoneCountry['code'];?></option>
                             <?php
                             }
                         ?>
