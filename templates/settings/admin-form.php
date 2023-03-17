@@ -176,7 +176,7 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
         </div>
     </div>
 
-    <div id="activate-licence" <?php echo ($isLeadCreated=='no')? 'style="display:none"': '';?>>
+    <div id="activate-licence" <?php //echo ($isLeadCreated=='no')? 'style="display:none"': '';?>>
         <div class="section">    
 
             
