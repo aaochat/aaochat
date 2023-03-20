@@ -1,6 +1,7 @@
 jQuery(document).ready(function(){
 
 	$( "#side-menu-lead-create" ).on( "click", function(e) {
+			var action_name = $(this).attr('name');
 			var aaochat_lead_name = $('#aaochat_lead_name').val();
 			var aaochat_lead_email = $('#aaochat_lead_email').val();
 			var aaochat_lead_phone_contry_code = $('#aaochat_lead_phone_contry_code').val();
@@ -75,7 +76,8 @@ jQuery(document).ready(function(){
 			$.ajax({
 				url: OC.generateUrl('/apps/aaochat/createlead'),
 				type: 'POST',
-				data: { aaochat_lead_name: aaochat_lead_name,
+				data: { action_name:action_name,
+				aaochat_lead_name: aaochat_lead_name,
 				aaochat_lead_email: aaochat_lead_email,
 				aaochat_lead_phone_contry_code: aaochat_lead_phone_contry_code,
 				aaochat_lead_phone: aaochat_lead_phone,
@@ -87,26 +89,33 @@ jQuery(document).ready(function(){
 					
 		    		if( lead_response.status == 'success' )
 		    		{
-		    			var responseData = lead_response.data;
-		    			var id = responseData._id;
-		    			var name = responseData.name;
-		    			var email = responseData.email;		    			
-		    			var phoneNo = responseData.phoneNo;
-		    			var organization = responseData.organization;
-		    			var status = responseData.status;
-						var isLeadCreated = 'no';
-						if(id == '') {
-							isLeadCreated = 'yes';
-						} else {
-							$(this).removeAttr('disabled','disabled');
-						}
+						if(action_name == 'register')
+						{
+							var responseData = lead_response.data;
+							var id = responseData._id;
+							var name = responseData.name;
+							var email = responseData.email;		    			
+							var phoneNo = responseData.phoneNo;
+							var organization = responseData.organization;
+							var status = responseData.status;
+							var isLeadCreated = 'no';
+							if(id == '') {
+								isLeadCreated = 'yes';
+							} else {
+								$(this).removeAttr('disabled','disabled');
+							}
 
-						$('#aaochat_lead_status').val(status);
-						$('#aaochat_lead_id').val(id);
-						$('#aaochat_lead_status_msg').html('You will receive the license key in your registered email address within 24 hours. <br/>Once you receive the license key, please enter below and activate it.');
-						$('#aaochat-lead .side-menu-setting-table input').attr('readonly','readonly');
-						$('#aaochat-lead .side-menu-setting-table textarea').attr('textarea','textarea');
-						$('#aaochat-lead .side-menu-setting-table select').attr('disabled','disabled');
+							$('#aaochat_lead_status').val(status);
+							$('#aaochat_lead_id').val(id);
+							$('#aaochat_lead_status_msg').html('You will receive the license key in your registered email address within 24 hours. <br/>Once you receive the license key, please enter below and activate it.');
+							$('#aaochat-lead .side-menu-setting-table input').attr('readonly','readonly');
+							$('#aaochat-lead .side-menu-setting-table textarea').attr('textarea','textarea');
+							$('#aaochat-lead .side-menu-setting-table select').attr('disabled','disabled');
+						}
+						else
+						{
+							$('#aaochat_lead_status_msg').html('Your detail updated successfully.');
+						}
 						setTimeout(function(){
 							//window.location.reload();
 							$('.aaochat_loader').hide();
@@ -241,7 +250,7 @@ jQuery(document).ready(function(){
 
 						setTimeout(function(){
 							window.location.reload();
-						}, 30000);
+						}, 3000); //30000
 		    		}
 		    		else 
 		    		{

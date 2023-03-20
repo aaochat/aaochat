@@ -101,7 +101,8 @@ class AaochatSettingController extends Controller
      *
      * @return Response
      */
-    public function createLead($aaochat_lead_name,
+    public function createLead($action_name,
+    $aaochat_lead_name,
     $aaochat_lead_email,
     $aaochat_lead_phone_contry_code,
     $aaochat_lead_phone,
@@ -132,14 +133,29 @@ class AaochatSettingController extends Controller
             $leadData['organization'] = $aaochat_lead_organization;
             $leadData['companyAddress'] = $aaochat_lead_organization_address;
             $leadData['siteUrl'] = $aaochat_lead_organization_siteurl;
-            $responseJson = $this->aaochatService->createLead($leadData);
-            $response = json_decode($responseJson, true);
-            if(isset($response['status']) && $response['status']=='success') {
-                //Update setting in Nextcloud DB
-                $this->aaochatService->updateAaochatLeadData($response);
+
+            $aaochat_license_key = $this->config->getAppValue(Application::APP_ID, 'aaochat_license_key', '');
+            if(!empty($aaochat_license_key)) {
+                $responseJson = $this->aaochatService->updateLead($aaochat_license_key,$leadData);
+                $response = json_decode($responseJson, true);
+                if(isset($response['status']) && $response['status']=='success') {
+                    $response['data'] = $leadData;
+                    //Update setting in Nextcloud DB
+                    $this->aaochatService->updateAaochatLeadData('update',$response);
+                } else {
+                    $response['message'] = 'Update failed. Please try after sometime.';
+                }                
             } else {
-                $response['message'] = 'Registration failed. Please try after sometime.';
+                $responseJson = $this->aaochatService->createLead($leadData);
+                $response = json_decode($responseJson, true);
+                if(isset($response['status']) && $response['status']=='success') {
+                    //Update setting in Nextcloud DB
+                    $this->aaochatService->updateAaochatLeadData('add',$response);
+                } else {
+                    $response['message'] = 'Registration failed. Please try after sometime.';
+                }
             }
+            
             $isJsonRes = true;
         } else {
             $response['message'] = 'Please provide your all required information.';
@@ -292,7 +308,9 @@ class AaochatSettingController extends Controller
                     $localStorageData['aaochatServerUrl'] = $aaochatServerUrl;
                     $localStorageData['aaochatFileServerUrl'] = $aaochatFileServerUrl;
                     
-                    $response['data']['localStorageData'] = $localStorageData;
+                    if(!isset($response['data']['localStorageData'])) {
+                        $response['data']['localStorageData'] = $localStorageData;
+                    }
                 }
 
             }
