@@ -10,7 +10,7 @@ This app is in a stable state, but not thoroughly tested for security
 Clone the contents of the repository into your `apps` directory and rename it to `aaochat`, if necessary. Otherwise simply download it from the Nextcloud app store within your Nextcloud instance: https://apps.nextcloud.com/apps/aaochat
 
 ## Configuration
-### Regisstration and Licence key activation
+### Registration and Licence key activation
 Admin user need to register from Aao Business Chat setting page.
 
 Aao Business Chat team will review the details and setup chat server and create licence key.
