@@ -250,7 +250,7 @@ jQuery(document).ready(function(){
 
 						setTimeout(function(){
 							window.location.reload();
-						}, 3000); //30000
+						}, 30000); //30000
 		    		}
 		    		else 
 		    		{
