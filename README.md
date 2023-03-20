@@ -1,4 +1,4 @@
-# AaoChat
+# AaoBusinessChat
 ## Description
 All nextcloud users can chat internally using main window. Or in particular file with those with whome the file has been shared.
 
@@ -11,15 +11,15 @@ Clone the contents of the repository into your `apps` directory and rename it to
 
 ## Configuration
 ### Regisstration and Licence key activation
-Admin user need to register from aaochat setting page.
+Admin user need to register from Aao Business Chat setting page.
 
-Aaochat team will review the details and setup chat server and create licence key.
+Aao Business Chat team will review the details and setup chat server and create licence key.
 
-Aaochat team will send the details and licence key through mail.
+Aao Business Chat team will send the details and licence key through mail.
 
-Admin user need to activete that licence key from  aaochat setting page.
+Admin user need to activete that licence key from  Aao Business Chat setting page.
 
 ## Licenses
-Aaochat: [GNU Affero General Public License](http://www.gnu.org/licenses/agpl-3.0.html)
+Aao Business Chat: [GNU Affero General Public License](http://www.gnu.org/licenses/agpl-3.0.html)
 
 Scriptjs: [MIT License](https://opensource.org/licenses/MIT)
