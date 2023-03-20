@@ -166,7 +166,7 @@ if(isset($_['aaochat_license_status']) && $_['aaochat_license_status'] == 'activ
         <div class="section" id="more">
 
             <?php if($licensekeyExists=='yes') { ?>
-                <button id="side-menu-lead-create" name="update" class="btn btn-info" <?php echo ($isLeadCreated=='yes')? 'disabled="disabled"': '';?>>
+                <button id="side-menu-lead-create" name="update" class="btn btn-info" >
                     <?php p($l->t('Update')); ?>
                 </button>
             <?php } else { ?>

@@ -57,7 +57,7 @@ class AaochatService
     private $aaochat_file_server_url;
     private $aaochat_license_key;
     private $aaochat_log_dir;
-    private $is_aaochat_api_log_enable = true;
+    private $is_aaochat_api_log_enable = false;
     /** @var IUserManager */
     private $userManager;
 
