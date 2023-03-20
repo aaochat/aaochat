@@ -23,7 +23,7 @@ This powerful App offers numerous helpful features to make your chats smoother, 
 Experience Seamless and Efficient Team communication with Aao Business Chat]]></description>
     <version>0.0.6</version>
     <licence>agpl</licence>
-    <author mail="info@aaochat.com" >Aao Chat</author>
+    <author mail="info@aaochat.com" >Aao Business Chat</author>
     <namespace>AaoChat</namespace>
     <category>tools</category>
     <website>https://aaochat.com/</website>
@@ -40,7 +40,7 @@ Experience Seamless and Efficient Team communication with Aao Business Chat]]></
     <!--
     <navigations>
         <navigation>
-            <name>AaoChat Business</name>
+            <name>Aao Business Chat</name>
             <route>aaochat.page.index</route>
         </navigation>
     </navigations>

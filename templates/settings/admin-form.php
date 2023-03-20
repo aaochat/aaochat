@@ -52,7 +52,7 @@ if(isset($_['aaochat_license_status']) && $_['aaochat_license_status'] == 'activ
 
     <div class="section">
          <h2>
-            <?php p($l->t('AaoChat Business Settings')); ?>
+            <?php p($l->t('Aao Business Chat Settings')); ?>
         </h2>
     </div>
 
