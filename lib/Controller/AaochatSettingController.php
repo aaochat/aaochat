@@ -343,7 +343,7 @@ class AaochatSettingController extends Controller
             $responseJson = $this->aaochatService->surrenderLicenseKey($licenseKey);
             $response = json_decode($responseJson, true);
             if(isset($response['status']) && $response['status']=='success') {
-                $this->aaochatService->updateAaochatConfigSetting($response);
+                $this->aaochatService->cleanAaochatConfigSetting($response);
             }
             $isJsonRes = true;
         } else {
