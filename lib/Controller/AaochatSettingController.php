@@ -218,7 +218,9 @@ class AaochatSettingController extends Controller
         if(!empty($licenseKey)) {
             $responseJson = $this->aaochatService->activateLicenseKey($licenseKey);
             $response = json_decode($responseJson, true);
-            if(isset($response['status']) && $response['status']=='success') {
+            if(isset($response['status']) && $response['status']=='success')
+            {
+
                 //Update setting in Nextcloud DB
                 $this->aaochatService->updateAaochatConfigSetting($response);
 
@@ -312,7 +314,18 @@ class AaochatSettingController extends Controller
                         $response['data']['localStorageData'] = $localStorageData;
                     }
                 }
-
+                
+            }
+            else
+            {
+                if(isset($response['data']['serverStatus']) && $response['status']['serverStatus']=='active')
+                {
+                    $localStorageData['ncUserAuthKey'] = '';
+                    $localStorageData['aaochatServerUrl'] = '';
+                    $localStorageData['aaochatFileServerUrl'] = '';
+                    
+                    $response['data']['localStorageData'] = $localStorageData;
+                }
             }
             $isJsonRes = true;
         } else {
