@@ -1,6 +1,7 @@
 jQuery(document).ready(function(){
 
 	$( "#side-menu-lead-create" ).on( "click", function(e) {
+			var action_name = $(this).attr('name');
 			var aaochat_lead_name = $('#aaochat_lead_name').val();
 			var aaochat_lead_email = $('#aaochat_lead_email').val();
 			var aaochat_lead_phone_contry_code = $('#aaochat_lead_phone_contry_code').val();
@@ -75,7 +76,8 @@ jQuery(document).ready(function(){
 			$.ajax({
 				url: OC.generateUrl('/apps/aaochat/createlead'),
 				type: 'POST',
-				data: { aaochat_lead_name: aaochat_lead_name,
+				data: { action_name:action_name,
+				aaochat_lead_name: aaochat_lead_name,
 				aaochat_lead_email: aaochat_lead_email,
 				aaochat_lead_phone_contry_code: aaochat_lead_phone_contry_code,
 				aaochat_lead_phone: aaochat_lead_phone,
@@ -87,31 +89,45 @@ jQuery(document).ready(function(){
 					
 		    		if( lead_response.status == 'success' )
 		    		{
-		    			var responseData = lead_response.data;
-		    			var id = responseData._id;
-		    			var name = responseData.name;
-		    			var email = responseData.email;		    			
-		    			var phoneNo = responseData.phoneNo;
-		    			var organization = responseData.organization;
-		    			var status = responseData.status;
-						var isLeadCreated = 'no';
-						if(id == '') {
-							isLeadCreated = 'yes';
-						} else {
-							$(this).removeAttr('disabled','disabled');
+						if(action_name == 'register')
+						{
+							var responseData = lead_response.data;
+							var id = responseData._id;
+							var name = responseData.name;
+							var email = responseData.email;		    			
+							var phoneNo = responseData.phoneNo;
+							var organization = responseData.organization;
+							var status = responseData.status;
+							var isLeadCreated = 'no';
+							if(id == '') {
+								isLeadCreated = 'yes';
+							} else {
+								$(this).removeAttr('disabled','disabled');
+							}
+
+							$('#aaochat_lead_status').val(status);
+							$('#aaochat_lead_id').val(id);
+							$('#aaochat_lead_status_msg').html('You will receive the license key in your registered email address within 24 hours. <br/>Once you receive the license key, please enter below and activate it.');
+							$('#aaochat-lead .side-menu-setting-table input').attr('readonly','readonly');
+							$('#aaochat-lead .side-menu-setting-table textarea').attr('textarea','textarea');
+							$('#aaochat-lead .side-menu-setting-table select').attr('disabled','disabled');
+						
+							setTimeout(function(){
+								//window.location.reload();
+								$('.aaochat_loader').hide();
+								$('#activate-licence').css({'display':'block'});
+							}, 1500);
+						}
+						else
+						{
+							$('#aaochat_lead_status_msg').html('Your detail updated successfully.');
+							setTimeout(function(){
+								$("#side-menu-lead-create").removeAttr('disabled','disabled');
+								$('.aaochat_loader').hide();
+								$('#activate-licence').css({'display':'block'});
+							}, 1500);
 						}
 
-						$('#aaochat_lead_status').val(status);
-						$('#aaochat_lead_id').val(id);
-						$('#aaochat_lead_status_msg').html('You will receive the license key in your registered email address within 24 hours. <br/>Once you receive the license key, please enter below and activate it.');
-						$('#aaochat-lead .side-menu-setting-table input').attr('readonly','readonly');
-						$('#aaochat-lead .side-menu-setting-table textarea').attr('textarea','textarea');
-						$('#aaochat-lead .side-menu-setting-table select').attr('disabled','disabled');
-						setTimeout(function(){
-							//window.location.reload();
-							$('.aaochat_loader').hide();
-							$('#activate-licence').css({'display':'block'});
-						}, 1500);
 		    		}
 		    		else 
 		    		{
@@ -190,16 +206,16 @@ jQuery(document).ready(function(){
 					
 		    		if( license_response.status == 'success' )
 		    		{
-		    			var responseData = license_response.data;
-		    			var id = responseData._id;
-		    			var clientId = responseData.clientId;
-		    			var licenseKey = responseData.licenseKey;		    			
-		    			var serverDetails = responseData.serverDetails;
-		    			var serverInstanceType = serverDetails.serverInstanceType;
-		    			var url = serverDetails.url;
-		    			var fileServerUrl = serverDetails.fileServerUrl;
-		    			var storageSize = serverDetails.storageSize;
-		    			var serverDetailsId = serverDetails._id;
+						var responseData = license_response.data;
+						var id = responseData._id;
+						var clientId = responseData.clientId;
+						var licenseKey = responseData.licenseKey;		    			
+						var serverDetails = responseData.serverDetails;
+						var serverInstanceType = serverDetails.serverInstanceType;
+						var url = serverDetails.url;
+						var fileServerUrl = serverDetails.fileServerUrl;
+						var storageSize = serverDetails.storageSize;
+						var serverDetailsId = serverDetails._id;
 						var status = responseData.status;
 						var activationDate = responseData.activationDate;
 						var ipAddress = responseData.ipAddress;
@@ -241,8 +257,30 @@ jQuery(document).ready(function(){
 
 						setTimeout(function(){
 							window.location.reload();
-						}, 30000);
+						}, 30000); //30000
+						
 		    		}
+					else if( license_response.status == 'error' )
+		    		{
+						if(typeof license_response.data != 'undefined') {
+							var responseData = license_response.data;
+							console.log(responseData.serverStatus);
+							if(responseData.serverStatus == 'inactive' )
+							{
+								alert('Oops! It appears that the license key you are attempting to use has expired. To continue using Aao Business Chat, kindly submit a new registration request.');
+								$("#side-menu-license-activate").removeAttr('disabled','disabled');
+								$('.aaochat_loader').hide();
+							}
+						}
+						else
+						{
+							if(typeof license_response.message != 'undefined') {
+								alert(license_response.message);
+								$("#side-menu-license-activate").removeAttr('disabled','disabled');
+								$('.aaochat_loader').hide();
+							}
+						}
+					}
 		    		else 
 		    		{
 		    			if(typeof license_response.message != 'undefined') {

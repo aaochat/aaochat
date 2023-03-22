@@ -63,7 +63,7 @@ class Application extends App implements IBootstrap {
     public const APP_ID = 'aaochat';
     public const APP_VERSION = 'v11';
 
-    public const APP_NAME = 'Aao Chat';
+    public const APP_NAME = 'Aao';
     /**
      * @var OC\AllConfig
      */

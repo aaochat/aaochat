@@ -172,6 +172,32 @@ class AaochatService
         return $output;
     }
 
+    public function curlPut($type=0, $header=null, $url=null, $data=null) {
+
+        if(strpos($url, 'http') === false) {
+            $apiUrl = $this->api_base_url.$url;
+        } else {
+            $apiUrl = $url;
+        }
+        $curl = curl_init();
+
+        curl_setopt($curl, CURLOPT_URL, $apiUrl);
+
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+        
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+        if($data!=null)
+        {
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+        }
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $output = curl_exec($curl);
+        curl_close($curl);
+
+        return $output;
+    }
+
     public function curlGet($requestUrl, $header=null) {
         if(strpos($requestUrl, 'http') === false) {
             $apiUrl = $this->api_base_url.$requestUrl;
@@ -208,10 +234,37 @@ class AaochatService
         return $apiResponse;
     }
 
-    public function updateAaochatLeadData($response) {
+    public function updateLead($aaochat_license_key,$leadData) {
+
+        $header = array(
+            "Accept:application/json",
+            "Content-Type:application/json"
+        );
+        $url = '/clients/license/'.$aaochat_license_key;
+        $data = $leadData;
+
+        //$data = json_encode($data);
+        $apiResponse = $this->curlPut(0,$header,$url,$data);
+
+        if($this->isAaochatApiLogEnable()) {
+            $logData = array();
+            $logData['url'] = $url;
+            $logData['headers'] = $header;
+            $logData['data'] = $data;
+            $logData['apiResponse'] = json_decode($apiResponse);
+            $logData = json_encode($logData);
+            $myfile = file_put_contents($this->aaochat_log_dir.'update_lead_aaochat.txt', $logData.PHP_EOL , FILE_APPEND | LOCK_EX);
+        }
+        return $apiResponse;
+    }
+
+    public function updateAaochatLeadData($action,$response) {
         if(!empty($response)) {
             $responseData = $response['data'];
-            $id = $responseData['_id'];
+            $id = '';
+            if($action == 'add') {
+                $id = $responseData['_id'];
+            }
             $name = $responseData['name'];
             $email = $responseData['email'];
             $phoneCountryCode = $responseData['countryCode'];
@@ -222,13 +275,19 @@ class AaochatService
             $organizationSiteURL = $responseData['siteUrl'];
             $status = $responseData['status'];
 
-            $isLeadCreated = 'no';
-            if(!empty($id)) {
+            if($action == 'add') {
+                $isLeadCreated = 'no';
+                if(!empty($id)) {
+                    $isLeadCreated = 'yes';
+                }
+            } else if($action == 'update') {
                 $isLeadCreated = 'yes';
             }
 
             if($isLeadCreated == 'yes') {
-                $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_id', $id);
+                if($action == 'add') {
+                    $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_id', $id);
+                }
                 $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_name', $name);
                 $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_email', $email);
                 $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_phone_contry_code', $phoneCountryCode);
@@ -237,7 +296,11 @@ class AaochatService
                 $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_organization', $organization);
                 $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_organization_address', $organizationAddress);
                 $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_organization_siteurl', $organizationSiteURL);
-                $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_status', $status);
+                if($action == 'add') {
+                    $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_status', $status);
+                } else if($action == 'update') {
+                    $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_status', 'active');
+                }
             }
         }
     }
@@ -311,7 +374,7 @@ class AaochatService
             $logData['data'] = $data;
             $logData['apiResponse'] = json_decode($apiResponse);
             $logData = json_encode($logData);
-            $myfile = file_put_contents($this->aaochat_log_dir.'activate_licencekey_aaochat.txt', $logData.PHP_EOL , FILE_APPEND | LOCK_EX);
+            $myfile = file_put_contents($this->aaochat_log_dir.'activate_licensekey_aaochat.txt', $logData.PHP_EOL , FILE_APPEND | LOCK_EX);
         }
 
         return $apiResponse;
@@ -338,7 +401,7 @@ class AaochatService
             $logData['data'] = $data;
             $logData['apiResponse'] = json_decode($apiResponse);
             $logData = json_encode($logData);
-            $myfile = file_put_contents($this->aaochat_log_dir.'surrender_licencekey_aaochat.txt', $logData.PHP_EOL , FILE_APPEND | LOCK_EX);
+            $myfile = file_put_contents($this->aaochat_log_dir.'surrender_licensekey_aaochat.txt', $logData.PHP_EOL , FILE_APPEND | LOCK_EX);
         }
 
         return $apiResponse;
@@ -379,6 +442,109 @@ class AaochatService
             $this->config->setAppValue(Application::APP_ID, 'aaochat_license_id', $id);
             $this->config->setAppValue(Application::APP_ID, 'aaochat_activation_date', $activationDate);
             $this->config->setAppValue(Application::APP_ID, 'aaochat_ipaddress', $ipAddress);
+
+            if(isset($responseData['client']) && !empty($responseData['client'])) {
+                $clientData = $responseData['client'];
+
+                $client_name = isset($clientData['name'])?$clientData['name']:'';
+                $client_email = isset($clientData['email'])?$clientData['email']:'';
+                $client_phoneCountryCode = isset($clientData['countryCode'])?$clientData['countryCode']:'';
+                $client_phoneNo = isset($clientData['phoneNo'])?$clientData['phoneNo']:'';
+                $client_country = isset($clientData['country'])?$clientData['country']:'';
+                $client_organization = isset($clientData['organization'])?$clientData['organization']:'';
+                $client_organizationAddress = isset($clientData['companyAddress'])?$clientData['companyAddress']:'';
+                $client_organizationSiteURL = isset($clientData['siteUrl'])?$clientData['siteUrl']:'';
+                $client_status = isset($clientData['status'])?$clientData['status']:'';
+
+                //$this->config->setAppValue(Application::APP_ID, 'aaochat_lead_id', $id);
+                //$aaochat_lead_name = $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_name', '');
+                if(!empty($client_name)) {
+                    $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_name', $client_name);
+                }
+                //$aaochat_lead_email = $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_email', '');
+                if(!empty($client_email)) {
+                $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_email', $client_email);
+                }
+                //$aaochat_lead_phone_contry_code = $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_phone_contry_code', '');
+                if(!empty($client_phoneCountryCode)) {
+                    $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_phone_contry_code', $client_phoneCountryCode);
+                }
+                //$aaochat_lead_phone = $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_phone', '');
+                if(!empty($client_phoneNo)) {
+                    $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_phone', $client_phoneNo);
+                }
+                //$aaochat_lead_country = $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_country', '');
+                if(!empty($client_country)) {
+                    $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_country', $client_country);
+                }
+                //$aaochat_lead_organization = $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_organization', '');
+                if(!empty($client_organization)) {
+                    $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_organization', $client_organization);
+                }
+                //$aaochat_lead_organization_address = $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_organization_address', '');
+                if(!empty($client_organizationAddress)) {
+                    $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_organization_address', $client_organizationAddress);
+                }
+                //$aaochat_lead_organization_siteurl = $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_organization_siteurl', '');
+                if(!empty($client_organizationSiteURL)) {
+                    $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_organization_siteurl', $client_organizationSiteURL);
+                }
+                //$aaochat_lead_status = $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_status', '');
+                if(!empty($client_status)) {
+                    $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_status', $client_status);
+                }
+
+            }
+            $this->init();
+        }
+    }
+
+    public function cleanAaochatConfigSetting($response) {
+        if(!empty($response)) {
+            $responseData = $response['data'];
+            $id = $responseData['_id'];
+            $clientId = $responseData['clientId'];
+            $licenseKey = $responseData['licenseKey'];
+            $serverDetails = $responseData['serverDetails'];
+            $serverInstanceType = $serverDetails['serverInstanceType'];
+            $url = $serverDetails['url'];
+            $fileServerUrl = $serverDetails['fileServerUrl'];
+            $storageSize = $serverDetails['storageSize'];
+            $serverDetailsId = $serverDetails['_id'];
+            $status = $responseData['status'];
+            $activationDate = $responseData['activationDate'];
+            $ipAddress = $responseData['ipAddress'];
+
+            $isLicenseValid = 'no';
+            if($status == 'active') {
+                $isLicenseValid = 'yes';
+            }
+
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_client_id', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_license_key', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_is_license_valid', '');
+
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_ser_instance_type', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_ser_url', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_ser_file_server_url', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_ser_storage_size', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_ser_id', '');
+
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_license_status', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_license_id', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_activation_date', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_ipaddress', '');
+
+
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_name', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_email', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_phone_contry_code', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_phone', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_country', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_organization', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_organization_address', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_organization_siteurl', '');
+            $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_status', '');
 
             $this->init();
         }

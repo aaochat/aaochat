@@ -20,10 +20,14 @@ This powerful App offers numerous helpful features to make your chats smoother, 
 - 🖼️ View documents/media without downloading
 - 🤖 Utilize AI (OCR) to search photos, videos, and documents
 
-Experience Seamless and Efficient Team communication with Aao Business Chat]]></description>
-    <version>0.0.5</version>
+Experience Seamless and Efficient Team communication with Aao Business Chat.
+
+#####
+
+Here is the **[link](https://youtu.be/0n6bcnDckyc)** to the video: Step by step guide on how to install Aao Business Chat on Nextcloud **[https://youtu.be/0n6bcnDckyc](https://youtu.be/0n6bcnDckyc)**]]></description>
+    <version>0.0.6</version>
     <licence>agpl</licence>
-    <author mail="info@aaochat.com" >Aao Chat</author>
+    <author mail="info@aaochat.com" >Aao Business Chat</author>
     <namespace>AaoChat</namespace>
     <category>tools</category>
     <website>https://aaochat.com/</website>
@@ -40,7 +44,7 @@ Experience Seamless and Efficient Team communication with Aao Business Chat]]></
     <!--
     <navigations>
         <navigation>
-            <name>AaoChat Business</name>
+            <name>Aao Business Chat</name>
             <route>aaochat.page.index</route>
         </navigation>
     </navigations>

@@ -27,25 +27,32 @@ style('aaochat', 'admin');
 $urlGenerator = \OC::$server[IURLGenerator::class];
 
 $extraFieldClass = 'hide';
+$licensekeyExists = 'no';
 if(isset($_['aaochat_license_key']) && !empty($_['aaochat_license_key'])) {
     $extraFieldClass = 'show';
+    $licensekeyExists = 'yes';
+}
+
+$isLeadEditAllowed = 'yes';
+$isLeadCreated = 'no';
+if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
+    $isLeadCreated = 'yes';
+    $isLeadEditAllowed = 'no';
 }
 
 $isLicenseValid = 'no';
 if(isset($_['aaochat_license_status']) && $_['aaochat_license_status'] == 'active') {
     $isLicenseValid = 'yes';
+    $isLeadEditAllowed = 'yes';
 }
-$isLeadCreated = 'no';
-if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
-    $isLeadCreated = 'yes';
-}
+
 ?>
 
 <div id="side-menu-section">
 
     <div class="section">
          <h2>
-            <?php p($l->t('AaoChat Business Settings')); ?>
+            <?php p($l->t('Aao Business Chat Settings')); ?>
         </h2>
     </div>
 
@@ -56,14 +63,14 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
             </h3>
 
             <div class="side-menu-setting-table " >
-                <input type="hidden" class="side-menu-setting" id="aaochat_lead_id" name="aaochat_lead_id" value="<?php echo $_['aaochat_lead_id']; ?>" style="width: 100%;" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?>>
+                <input type="hidden" class="side-menu-setting" id="aaochat_lead_id" name="aaochat_lead_id" value="<?php echo $_['aaochat_lead_id']; ?>" style="width: 100%;" <?php echo ($isLeadEditAllowed=='no')? 'readonly="readonly"': '';?>>
                 <div class="side-menu-setting-row">
                     <div class="side-menu-setting-label">
                         <?php p($l->t('Full Name')); ?>
                         <span style="color:red;">*</span>
                     </div>
                     <div class="side-menu-setting-form">
-                        <input type="text" placeholder="<?php p($l->t('Full Name')); ?>" class="side-menu-setting" id="aaochat_lead_name" name="aaochat_lead_name" value="<?php echo $_['aaochat_lead_name']; ?>" style="width: 100%;" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?>>
+                        <input type="text" placeholder="<?php p($l->t('Full Name')); ?>" class="side-menu-setting" id="aaochat_lead_name" name="aaochat_lead_name" value="<?php echo $_['aaochat_lead_name']; ?>" style="width: 100%;" <?php echo ($isLeadEditAllowed=='no')? 'readonly="readonly"': '';?>>
                     </div>
                 </div>
                 <div class="side-menu-setting-row">
@@ -72,7 +79,7 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                         <span style="color:red;">*</span>
                     </div>
                     <div class="side-menu-setting-form">
-                        <input type="text" placeholder="<?php p($l->t('Email')); ?>" class="side-menu-setting" id="aaochat_lead_email" name="aaochat_lead_email" value="<?php echo $_['aaochat_lead_email']; ?>" style="width: 100%;" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?>>
+                        <input type="text" placeholder="<?php p($l->t('Email')); ?>" class="side-menu-setting" id="aaochat_lead_email" name="aaochat_lead_email" value="<?php echo $_['aaochat_lead_email']; ?>" style="width: 100%;" <?php echo ($isLeadEditAllowed=='no')? 'readonly="readonly"': '';?>>
                     </div>
                 </div>
                 <div class="side-menu-setting-row">
@@ -81,7 +88,7 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                         <span style="color:red;">*</span>
                     </div>
                     <div class="side-menu-setting-form">
-                        <select id="aaochat_lead_phone_contry_code" name="aaochat_lead_phone_contry_code" style="width: 25%; float:left; padding: 5px; margin: 3px 0px;" <?php echo ($isLeadCreated=='yes')? 'disabled="disabled"': '';?>>
+                        <select id="aaochat_lead_phone_contry_code" name="aaochat_lead_phone_contry_code" style="width: 25%; float:left; padding: 5px; margin: 3px 0px;" <?php echo ($isLeadEditAllowed=='no')? 'disabled="disabled"': '';?>>
                         <?php
                             $phoneCountryCode = AaochatService::phoneCountryCode();
                             foreach($phoneCountryCode as $countryCode => $phoneCountry) {
@@ -91,7 +98,7 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                             }
                         ?>
                         </select>
-                        <input type="text" placeholder="<?php p($l->t('Phone Number')); ?>" class="side-menu-setting aaochat_lead_phone" id="aaochat_lead_phone" name="aaochat_lead_phone" value="<?php echo $_['aaochat_lead_phone']; ?>" style="width: 73%; float:left;" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?>>
+                        <input type="text" placeholder="<?php p($l->t('Phone Number')); ?>" class="side-menu-setting aaochat_lead_phone" id="aaochat_lead_phone" name="aaochat_lead_phone" value="<?php echo $_['aaochat_lead_phone']; ?>" style="width: 73%; float:left;" <?php echo ($isLeadEditAllowed=='no')? 'readonly="readonly"': '';?>>
                     </div>
                 </div>
                 <div class="side-menu-setting-row">
@@ -100,7 +107,7 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                         <span style="color:red;">*</span>
                     </div>
                     <div class="side-menu-setting-form">
-                        <select id="aaochat_lead_country" name="aaochat_lead_country" style="width: 100%; padding: 5px; margin: 3px 0px;" <?php echo ($isLeadCreated=='yes')? 'disabled="disabled"': '';?>>
+                        <select id="aaochat_lead_country" name="aaochat_lead_country" style="width: 100%; padding: 5px; margin: 3px 0px;" <?php echo ($isLeadEditAllowed=='no')? 'disabled="disabled"': '';?>>
                         <?php
                             $countries = AaochatService::getCountries();
                             foreach($countries as $countryIndex => $countryName) {
@@ -118,7 +125,7 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                         <span style="color:red;">*</span>
                     </div>
                     <div class="side-menu-setting-form">
-                        <input type="text" placeholder="<?php p($l->t('Organization')); ?>" class="side-menu-setting" id="aaochat_lead_organization" name="aaochat_lead_organization" value="<?php echo $_['aaochat_lead_organization']; ?>" style="width: 100%;" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?>>
+                        <input type="text" placeholder="<?php p($l->t('Organization')); ?>" class="side-menu-setting" id="aaochat_lead_organization" name="aaochat_lead_organization" value="<?php echo $_['aaochat_lead_organization']; ?>" style="width: 100%;" <?php echo ($isLeadEditAllowed=='no')? 'readonly="readonly"': '';?>>
                     </div>
                 </div>
                 <div class="side-menu-setting-row">
@@ -127,7 +134,7 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                         <span style="color:red;">*</span>
                     </div>
                     <div class="side-menu-setting-form">
-                        <textarea cols="100" placeholder="<?php p($l->t('Organization Address')); ?>" rows="3" class="side-menu-setting" id="aaochat_lead_organization_address" name="aaochat_lead_organization_address" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?> style="width: 100%;"><?php echo $_['aaochat_lead_organization_address']; ?></textarea>
+                        <textarea cols="100" placeholder="<?php p($l->t('Organization Address')); ?>" rows="3" class="side-menu-setting" id="aaochat_lead_organization_address" name="aaochat_lead_organization_address" <?php echo ($isLeadEditAllowed=='no')? 'readonly="readonly"': '';?> style="width: 100%;"><?php echo $_['aaochat_lead_organization_address']; ?></textarea>
                     </div>
                 </div>
                 <div class="side-menu-setting-row">
@@ -136,7 +143,7 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                         <span style="color:red;">*</span>
                     </div>
                     <div class="side-menu-setting-form">
-                        <input type="text" placeholder="<?php p($l->t('Organization Site URL')); ?>" class="side-menu-setting" id="aaochat_lead_organization_siteurl" name="aaochat_lead_organization_siteurl" value="<?php echo $_['aaochat_lead_organization_siteurl']; ?>" style="width: 100%;" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?>>
+                        <input type="text" placeholder="<?php p($l->t('Organization Site URL')); ?>" class="side-menu-setting" id="aaochat_lead_organization_siteurl" name="aaochat_lead_organization_siteurl" value="<?php echo $_['aaochat_lead_organization_siteurl']; ?>" style="width: 100%;" <?php echo ($isLeadEditAllowed=='no')? 'readonly="readonly"': '';?>>
                     </div>
                 </div>
                 <?php if($isLeadCreated=='yes') { ?>
@@ -145,7 +152,7 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
                         <?php p($l->t('Status')); ?>
                     </div>
                     <div class="side-menu-setting-form">
-                        <input type="text" class="side-menu-setting" id="aaochat_lead_status" name="aaochat_lead_status" value="<?php echo $_['aaochat_lead_status']; ?>" style="width: 100%;" <?php echo ($isLeadCreated=='yes')? 'readonly="readonly"': '';?>>
+                        <input type="text" class="side-menu-setting" id="aaochat_lead_status" name="aaochat_lead_status" value="<?php echo $_['aaochat_lead_status']; ?>" style="width: 100%;" <?php echo ($isLeadEditAllowed=='no')? 'readonly="readonly"': '';?>>
                     </div>
                 </div>
                 <?php } ?>
@@ -157,14 +164,16 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
 
 
         <div class="section" id="more">
-            <!--
-            <button id="side-menu-save" class="btn btn-info">
-                <?php //p($l->t('Save')); ?>
-            </button>
-            -->
-            <button id="side-menu-lead-create" class="btn btn-info" <?php echo ($isLeadCreated=='yes')? 'disabled="disabled"': '';?>>
+
+            <?php if($licensekeyExists=='yes') { ?>
+                <button id="side-menu-lead-create" name="update" class="btn btn-info" >
+                    <?php p($l->t('Update')); ?>
+                </button>
+            <?php } else { ?>
+            <button id="side-menu-lead-create" name="register" class="btn btn-info" <?php echo ($isLeadCreated=='yes')? 'disabled="disabled"': '';?>>
                 <?php p($l->t('Register')); ?>
             </button>
+            <?php } ?>
             <button id="side-menu-lead-status" class="btn btn-info" <?php echo ($isLeadCreated=='no')? 'disabled="disabled"': '';?>>
                 <?php p($l->t('Check Status')); ?>
             </button>
@@ -176,12 +185,12 @@ if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
         </div>
     </div>
 
-    <div id="activate-licence" <?php //echo ($isLeadCreated=='no')? 'style="display:none"': '';?>>
+    <div id="activate-license" <?php //echo ($isLeadCreated=='no')? 'style="display:none"': '';?>>
         <div class="section">    
 
             
             <h3>
-                <b><?php p($l->t('Activate Licence')); ?></b>
+                <b><?php p($l->t('Activate License')); ?></b>
             </h3>
 
             <div class="side-menu-setting-table">
