@@ -35,7 +35,8 @@ if(isset($_['aaochat_license_key']) && !empty($_['aaochat_license_key'])) {
 
 $isLeadEditAllowed = 'yes';
 $isLeadCreated = 'no';
-if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
+//if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
+if(isset($_['aaochat_lead_email']) && !empty($_['aaochat_lead_email'])) {
     $isLeadCreated = 'yes';
     $isLeadEditAllowed = 'no';
 }

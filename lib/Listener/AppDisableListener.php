@@ -64,9 +64,8 @@ class AppDisableListener implements IEventListener {
         if($isLicenseValid === 'yes') {
             $responseJson = $this->aaochatService->surrenderLicenseKey($licenseKey);
             $response = json_decode($responseJson, true);
-            if(isset($response['status']) && $response['status']=='success') {
-                $this->aaochatService->cleanAaochatConfigSetting($response);
-            }
+
+            $this->aaochatService->cleanAaochatConfigSetting();
         }
 
 		//$userData = $responseJson;

@@ -124,6 +124,13 @@ class AaochatSettingController extends Controller
         !empty($aaochat_lead_organization) &&
         !empty($aaochat_lead_organization_address) &&
         !empty($aaochat_lead_organization_siteurl)) {
+
+            $current_users_count = 0;
+            $nc_users = $this->aaochatService->getAllUsers();
+            if(!empty($nc_users)) {
+                $current_users_count = count($nc_users);
+            }
+
             $leadData = array();
             $leadData['name'] = $aaochat_lead_name;
             $leadData['email'] = $aaochat_lead_email;
@@ -133,6 +140,7 @@ class AaochatSettingController extends Controller
             $leadData['organization'] = $aaochat_lead_organization;
             $leadData['companyAddress'] = $aaochat_lead_organization_address;
             $leadData['siteUrl'] = $aaochat_lead_organization_siteurl;
+            $leadData['currentUsers'] = $current_users_count;
 
             $aaochat_license_key = $this->config->getAppValue(Application::APP_ID, 'aaochat_license_key', '');
             if(!empty($aaochat_license_key)) {
@@ -318,7 +326,7 @@ class AaochatSettingController extends Controller
             }
             else
             {
-                if(isset($response['data']['serverStatus']) && $response['status']['serverStatus']=='active')
+                if(isset($response['data']['serverStatus']) && $response['data']['serverStatus']=='active')
                 {
                     $localStorageData['ncUserAuthKey'] = '';
                     $localStorageData['aaochatServerUrl'] = '';

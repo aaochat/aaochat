@@ -26,6 +26,7 @@ namespace OCA\AaoChat\Listener;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\App\ManagerEvent;
+use OCA\AaoChat\Service\AaochatService;
 
 /**
  * Class UserDeletedListener
@@ -34,8 +35,15 @@ use OCP\App\ManagerEvent;
  */
 class AppEnableforgroupsListener implements IEventListener {
 
-	public function __construct() {
-		
+	/**
+     * @var OC\AllConfig
+     */
+    protected $config;
+
+    private $aaochatService;
+
+	public function __construct(AaochatService $aaochatService) {
+		$this->aaochatService = $aaochatService;
 	}
 
 	/**
@@ -46,7 +54,10 @@ class AppEnableforgroupsListener implements IEventListener {
             return;
         }
 
-		$userData = "app enable Listener for groups \n";
-        $myfile = file_put_contents('/var/www/html/nextcloud_23/data/aaochat_created.txt', $userData.PHP_EOL , FILE_APPEND | LOCK_EX);
+		if($this->aaochatService->isAaochatApiLogEnable()) {
+			$aaochat_log_dir = $this->aaochatService->getAaochatLogPath();
+			$userData = "app enable Listener for groups \n";
+            $myfile = file_put_contents($aaochat_log_dir.'aaochat_created.txt', $userData.PHP_EOL , FILE_APPEND | LOCK_EX);
+        }
 	}
 }

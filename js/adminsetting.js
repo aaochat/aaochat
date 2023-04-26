@@ -264,12 +264,16 @@ jQuery(document).ready(function(){
 		    		{
 						if(typeof license_response.data != 'undefined') {
 							var responseData = license_response.data;
-							console.log(responseData.serverStatus);
+							//console.log(responseData.serverStatus);
 							if(responseData.serverStatus == 'inactive' )
 							{
 								alert('Oops! It appears that the license key you are attempting to use has expired. To continue using Aao Business Chat, kindly submit a new registration request.');
 								$("#side-menu-license-activate").removeAttr('disabled','disabled');
 								$('.aaochat_loader').hide();
+
+								localStorage.removeItem("ngStorage-AuthKey");
+								localStorage.removeItem("nextcloud-AaoChatServerURL");
+								localStorage.removeItem("nextcloud-AaoChatFileServerURL");
 							}
 						}
 						else
