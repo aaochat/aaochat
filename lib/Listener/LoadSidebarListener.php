@@ -23,8 +23,8 @@ declare(strict_types=1);
  */
 namespace OCA\AaoChat\Listener;
 
-use OCA\Files\Event\LoadSidebar;
 use OCA\AaoChat\AppInfo\Application;
+use OCA\Files\Event\LoadSidebar;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\Util;
@@ -37,6 +37,6 @@ class LoadSidebarListener implements IEventListener {
 
 		// TODO: make sure to only include the sidebar script when
 		// we properly split it between files list and sidebar
-		Util::addScript(Application::APP_ID, 'aaochat.tabview'.Application::APP_VERSION);
+		Util::addScript(Application::APP_ID, 'aaochat_sidebar','files');
 	}
 }

@@ -72,8 +72,8 @@ class Action {
 
 			if($this->aaochatService->isAaochatApiLogEnable()) {
 				$aaochat_log_dir = $this->aaochatService->getAaochatLogPath();
-				//$hooksJsonData = json_encode($response);
-        		//$myfile = file_put_contents($aaochat_log_dir.'user_update_hook_data.txt', $hooksJsonData.PHP_EOL , FILE_APPEND | LOCK_EX);
+				$userJsonData = json_encode($userData);
+        		$myfile = file_put_contents($aaochat_log_dir.'user_changed.txt', $userJsonData.PHP_EOL , FILE_APPEND | LOCK_EX);
 			}
 		}
 	}
@@ -92,7 +92,7 @@ class Action {
 	    $newBasePath = pathinfo($newpath,PATHINFO_DIRNAME);
 
 		if($oldBasePath == $newBasePath) {
-		//File rename
+			//File rename
 			$sharedFilePath = \OC\Files\Filesystem::getPath($fileId);
 			$target = $newpath;
 

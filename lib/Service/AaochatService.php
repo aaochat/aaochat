@@ -40,6 +40,7 @@ class AaochatService
     private $userSession;
 
     private $l;
+    private $apiRequestUrl;
 
     /**
      * @var ConfigProxy
@@ -145,12 +146,14 @@ class AaochatService
     }
 
     public function curlPost($type=0, $header=null, $url=null, $data=null) {
-
+        //$output = '';
         if(strpos($url, 'http') === false) {
             $apiUrl = $this->api_base_url.$url;
         } else {
             $apiUrl = $url;
         }
+        $this->apiRequestUrl = $apiUrl;
+
         $curl = curl_init();
 
         curl_setopt($curl, CURLOPT_URL, $apiUrl);
@@ -179,6 +182,7 @@ class AaochatService
         } else {
             $apiUrl = $url;
         }
+        $this->apiRequestUrl = $apiUrl;
         $curl = curl_init();
 
         curl_setopt($curl, CURLOPT_URL, $apiUrl);
@@ -204,6 +208,7 @@ class AaochatService
         } else {
             $apiUrl = $requestUrl;
         }
+        $this->apiRequestUrl = $apiUrl;
         
         $ch   = curl_init();
         curl_setopt($ch, CURLOPT_URL, $apiUrl);
@@ -249,6 +254,7 @@ class AaochatService
         if($this->isAaochatApiLogEnable()) {
             $logData = array();
             $logData['url'] = $url;
+            $logData['apiRequestUrl'] = $this->apiRequestUrl;
             $logData['headers'] = $header;
             $logData['data'] = $data;
             $logData['apiResponse'] = json_decode($apiResponse);
@@ -370,6 +376,7 @@ class AaochatService
         if($this->isAaochatApiLogEnable()) {
             $logData = array();
             $logData['url'] = $url;
+            $logData['apiRequestUrl'] = $this->apiRequestUrl;
             $logData['headers'] = $header;
             $logData['data'] = $data;
             $logData['apiResponse'] = json_decode($apiResponse);
@@ -397,6 +404,7 @@ class AaochatService
         if($this->isAaochatApiLogEnable()) {
             $logData = array();
             $logData['url'] = $url;
+            $logData['apiRequestUrl'] = $this->apiRequestUrl;
             $logData['headers'] = $header;
             $logData['data'] = $data;
             $logData['apiResponse'] = json_decode($apiResponse);

@@ -1,43 +1,23 @@
 <?php
+declare(strict_types=1);
+// SPDX-FileCopyrightText: Aao Business Chat <info@aaochat.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 namespace OCA\AaoChat\AppInfo;
 
 use OCP\App\ManagerEvent;
 use OCA\AaoChat\Capabilities;
-use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IBootContext;
+use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
-use OCA\Files\Event\LoadAdditionalScriptsEvent;
-use OCA\Files\Event\LoadSidebar;
 
-use OCA\AaoChat\Listener\LoadAdditionalListener;
-use OCA\AaoChat\Listener\LoadSidebarListener;
-use OCA\AaoChat\Listener\AppManagement;
-use OCA\AaoChat\Listener\UserCreatedListener;
-use OCA\AaoChat\Listener\UserChangedListener;
-use OCA\AaoChat\Listener\UserDeletedListener;
-use OCA\AaoChat\Listener\AppEnableListener;
-use OCA\AaoChat\Listener\AppDisableListener;
-use OCA\AaoChat\Listener\AppEnableforgroupsListener;
-use OCA\AaoChat\Listener\FileShareListener;
-use OCA\AaoChat\Listener\FileUnshareListener;
-use OCA\AaoChat\Listener\UserLoggedInListener;
-use OCA\AaoChat\Listener\UserLoggedOutListener;
-
+use OCP\AppFramework\App;
 use OCA\AaoChat\Actions\UserManagement;
 use OCA\AaoChat\Actions\Files;
-use OCP\AppFramework\App;
 use OCP\Log\Audit\CriticalActionPerformedEvent;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Notification\IManager;
-//use OCP\User\Events;
-use OCP\User\Events\UserCreatedEvent;
-use OCP\User\Events\UserChangedEvent;
-//use OCP\User\Events\UserDeletedEvent;
-use OCP\User\Events\BeforeUserDeletedEvent;
-use OCP\User\Events\UserLoggedInEvent;
-use OCP\User\Events\UserLoggedOutEvent;
-use OCP\Share\Events\ShareCreatedEvent;
-use OCP\Share\Events\ShareDeletedEvent;
+
 
 use OCP\Util;
 use OCP\INavigationManager;
@@ -57,14 +37,33 @@ use OCP\IUserSession;
 use OC\Files\Filesystem;
 use OC\Files\Node\File;
 
-//class Application extends App {
+use OCA\Files\Event\LoadSidebar;
+use OCP\User\Events\UserCreatedEvent;
+use OCP\User\Events\UserChangedEvent;
+use OCP\User\Events\BeforeUserDeletedEvent;
+use OCP\User\Events\UserLoggedInEvent;
+use OCP\User\Events\UserLoggedOutEvent;
+use OCP\Share\Events\ShareCreatedEvent;
+use OCP\Share\Events\ShareDeletedEvent;
+
+use OCA\AaoChat\Listener\LoadSidebarListener;
+use OCA\AaoChat\Listener\UserCreatedListener;
+use OCA\AaoChat\Listener\UserChangedListener;
+use OCA\AaoChat\Listener\UserDeletedListener;
+use OCA\AaoChat\Listener\AppEnableListener;
+use OCA\AaoChat\Listener\AppDisableListener;
+use OCA\AaoChat\Listener\AppEnableforgroupsListener;
+use OCA\AaoChat\Listener\FileShareListener;
+use OCA\AaoChat\Listener\FileUnshareListener;
+use OCA\AaoChat\Listener\UserLoggedInListener;
+use OCA\AaoChat\Listener\UserLoggedOutListener;
+
 class Application extends App implements IBootstrap {
-
-    public const APP_ID = 'aaochat';
-    public const APP_VERSION = 'v11';
-
+	public const APP_ID = 'aaochat';
+    public const APP_VERSION = 'v01';
     public const APP_NAME = 'Aao';
-    /**
+
+	/**
      * @var OC\AllConfig
      */
     protected $config;
@@ -82,38 +81,18 @@ class Application extends App implements IBootstrap {
     private $aaochatService;
     private $apiauthService;
 
-    public function __construct(array $params = []){
-        parent::__construct(self::APP_ID, $params);
+	public function __construct() {
+		parent::__construct(self::APP_ID);
 
-       /** @var INavigationManager */
-        $this->navigationManager = \OC::$server->get(INavigationManager::class);
+		/** @var INavigationManager */
+        //$this->navigationManager = \OC::$server->get(INavigationManager::class);
         $this->urlGenerator = \OC::$server->get(IURLGenerator::class);
         $this->config = \OC::$server[IConfig::class];
-
-    }
-
-    public function register(IRegistrationContext $context): void {
-
-        $this->addEventListener($context);
-
-        /*
-        Util::addScript(self::APP_ID, 'jquery.cookie.min');
-        Util::addScript(self::APP_ID, 'adminsetting');
-        Util::addScript(self::APP_ID, 'script');
         
-        $eventDispatcher = \OC::$server->getEventDispatcher();
-        $eventDispatcher->addListener('OCA\Files::loadAdditionalScripts', function(){
-            if($this->isLicenseValid === 'yes') {
-                Util::addScript(self::APP_ID, 'authkey');
-                //Util::addScript(self::APP_ID, 'aaochat.tabview');
-                //Util::addScript(self::APP_ID, 'aaochattab.plugin');
-            }
-            Util::addStyle(self::APP_ID, 'aaochat');
-            Util::addStyle(self::APP_ID, 'aaochat-icons');
-            Util::addStyle(self::APP_ID, 'emoji');
-        },-800);
-        */
+	}
 
+	public function register(IRegistrationContext $context): void {
+        $this->addEventListener($context);
     }
 
     public function boot(IBootContext $context): void {
@@ -217,35 +196,38 @@ class Application extends App implements IBootstrap {
             }
         } else {
             unset($_COOKIE['ncUserAuthKey']);
-            setcookie('ncUserAuthKey', null, -1, '/'); 
+            setcookie('ncUserAuthKey', '', -1, '/'); 
             unset($_COOKIE['aaochatServerUrl']);
-            setcookie('aaochatServerUrl', null, -1, '/');
+            setcookie('aaochatServerUrl', '', -1, '/');
             unset($_COOKIE['aaochatFileServerUrl']);
-            setcookie('aaochatFileServerUrl', null, -1, '/');
+            setcookie('aaochatFileServerUrl', '', -1, '/');
         }
     }
 
-    protected function registerCollaborationResourceProvider(IServerContainer $server): void {
 
-        Util::addScript(self::APP_ID, 'jquery.cookie.min');
-        Util::addScript(self::APP_ID, 'jquery.fancybox');
-        Util::addScript(self::APP_ID, 'adminsetting');
-        Util::addScript(self::APP_ID, 'script');
+	public function addEventListener(IRegistrationContext $context) 
+    {
+		$context->registerCapability(Capabilities::class);
+        $context->registerEventListener(LoadSidebar::class, LoadSidebarListener::class);
 
-		$server->getEventDispatcher()->addListener('\OCP\Collaboration\Resources::loadAdditionalScripts', function () {
-            if($this->isLicenseValid === 'yes') {
-                Util::addScript(self::APP_ID, 'authkey');
-                Util::addScript(self::APP_ID, 'aaochat.tabview'.self::APP_VERSION);
-                Util::addScript(self::APP_ID, 'aaochattab.plugin'.self::APP_VERSION);
-            }
-            Util::addStyle(self::APP_ID, 'aaochat');
-            Util::addStyle(self::APP_ID, 'aaochat-icons');
-            Util::addStyle(self::APP_ID, 'emoji');
-            Util::addStyle(self::APP_ID, 'jquery.fancybox');
-		});
-	}
+        $context->registerEventListener(UserCreatedEvent::class, UserCreatedListener::class);
+        //Listener called 2 times so that used hooks form Action
+        //$context->registerEventListener(UserChangedEvent::class, UserChangedListener::class);
+        $context->registerEventListener(BeforeUserDeletedEvent::class, UserDeletedListener::class);
 
-    
+        $context->registerEventListener(ShareCreatedEvent::class, FileShareListener::class);
+        //Deprecated in 27
+        $context->registerEventListener(ShareDeletedEvent::class, FileUnshareListener::class);
+
+        $context->registerEventListener(UserLoggedInEvent::class, UserLoggedInListener::class);
+        $context->registerEventListener(UserLoggedOutEvent::class, UserLoggedOutListener::class);
+        
+        $context->registerEventListener(ManagerEvent::EVENT_APP_ENABLE, AppEnableListener::class);
+        $context->registerEventListener(ManagerEvent::EVENT_APP_ENABLE_FOR_GROUPS, AppEnableforgroupsListener::class);
+        $context->registerEventListener(ManagerEvent::EVENT_APP_DISABLE, AppDisableListener::class);
+        
+
+    }
 
     /**
      * Register hooks in order to log them
@@ -259,7 +241,6 @@ class Application extends App implements IBootstrap {
         $eventDispatcher = $serverContainer->get(EventDispatcherInterface::class);
 
         $this->appHooks($eventDispatcher);
-        //$this->sharingHooks($logger);
     }
 
     private function appHooks(EventDispatcherInterface $eventDispatcher): void {
@@ -269,10 +250,7 @@ class Application extends App implements IBootstrap {
     private function userManagementHooks(AaochatService $aaochatService, ApiauthService $apiauthService, IUserSession $userSession): void {
         $userActions = new UserManagement($aaochatService, $apiauthService);
 
-        //Util::connectHook('OC_User', 'post_createUser', $userActions, 'create');
-        //Util::connectHook('OC_User', 'post_deleteUser', $userActions, 'delete');
         Util::connectHook('OC_User', 'changeUser', $userActions, 'change');
-
     }
 
     private function fileManagementHooks(AaochatService $aaochatService, ApiauthService $apiauthService, IUserSession $userSession): void {
@@ -309,46 +287,27 @@ class Application extends App implements IBootstrap {
         Util::connectHook(Filesystem::CLASSNAME, Filesystem::signal_post_rename, $fileActions, 'fileMovePost');
     }
 
-    public function addEventListener(IRegistrationContext $context) 
-    {
+    protected function registerCollaborationResourceProvider(IServerContainer $server): void {
 
-        $context->registerCapability(Capabilities::class);
-        $context->registerEventListener(UserCreatedEvent::class, UserCreatedListener::class);
-        //$context->registerEventListener(UserChangedEvent::class, UserChangedListener::class);
-        //$context->registerEventListener(UserDeletedEvent::class, UserDeletedListener::class);
-        $context->registerEventListener(BeforeUserDeletedEvent::class, UserDeletedListener::class);
+        Util::addScript(self::APP_ID, 'jquery_cookie.min');
+        Util::addScript(self::APP_ID, 'jquery_fancybox');
+        Util::addScript(self::APP_ID, 'adminsetting');
+        Util::addScript(self::APP_ID, 'script');
 
-        $context->registerEventListener(ShareCreatedEvent::class, FileShareListener::class);
-        $context->registerEventListener(ShareDeletedEvent::class, FileUnshareListener::class);
+		$server->getEventDispatcher()->addListener('\OCP\Collaboration\Resources::loadAdditionalScripts', function () {
+            if($this->isLicenseValid === 'yes') {
+                Util::addScript(self::APP_ID, 'authkey');
+                //Util::addScript(self::APP_ID, 'aaochat.tabview'.self::APP_VERSION);
+                //Util::addScript(self::APP_ID, 'aaochattab.plugin'.self::APP_VERSION);
+            }
+            Util::addStyle(self::APP_ID, 'aaochat');
+            Util::addStyle(self::APP_ID, 'aaochat-icons');
+            Util::addStyle(self::APP_ID, 'emoji');
+            Util::addStyle(self::APP_ID, 'jquery_fancybox');
+		});
+	}
 
-        $context->registerEventListener(UserLoggedInEvent::class, UserLoggedInListener::class);
-        $context->registerEventListener(UserLoggedOutEvent::class, UserLoggedOutListener::class);
-        
-        $context->registerEventListener(ManagerEvent::EVENT_APP_ENABLE, AppEnableListener::class);
-        $context->registerEventListener(ManagerEvent::EVENT_APP_ENABLE_FOR_GROUPS, AppEnableforgroupsListener::class);
-        $context->registerEventListener(ManagerEvent::EVENT_APP_DISABLE, AppDisableListener::class);
-          
-        
-        /**
-		 * Register Events
-		*/
-            // $context->registerEventListener(LoadAdditionalScriptsEvent::class, LoadAdditionalListener::class);
-            // $context->registerEventListener(LoadSidebar::class, LoadSidebarListener::class);
-    }
-
-    public function redirectToSettingPage()
-    {
-        $url_generator   = \OC::$server->getURLGenerator();
-        $host_url       =  $url_generator->getAbsoluteURL('');
-        $site_url =  $host_url . 'index.php';
-
-        $settingPageUrl = $site_url.'/settings/admin/'.self::APP_ID;
-        header('Location: '.$settingPageUrl);
-        //return new RedirectResponse($settingPageUrl);        
-    }
-
-
-    /**
+	/**
      * Checks if this app is enabled.
      */
     protected function isEnabled(): bool
@@ -371,10 +330,4 @@ class Application extends App implements IBootstrap {
 
         return $enabled;
     }
-
-    
-
-
-
 }
-

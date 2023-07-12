@@ -56,7 +56,7 @@ class AppDisableListener implements IEventListener {
             return;
         }
 
-        $responseJson = '';
+        $responseJson = 'default';
         $this->config = \OC::$server[IConfig::class];
 
         $licenseKey = $this->config->getAppValue(Application::APP_ID, 'aaochat_license_key', '');
@@ -68,7 +68,10 @@ class AppDisableListener implements IEventListener {
             $this->aaochatService->cleanAaochatConfigSetting();
         }
 
-		//$userData = $responseJson;
-        //$myfile = file_put_contents('/var/www/html/nextcloud_23/data/aaochat_disable.txt', $userData.PHP_EOL , FILE_APPEND | LOCK_EX);
+        if($this->aaochatService->isAaochatApiLogEnable()) {
+            $aaochat_log_dir = $this->aaochatService->getAaochatLogPath();
+            $userData = $responseJson;
+            $myfile = file_put_contents($aaochat_log_dir.'aaochat_disable.txt', $userData.PHP_EOL , FILE_APPEND | LOCK_EX);
+        }
 	}
 }

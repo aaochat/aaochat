@@ -1,30 +1,36 @@
 <?php
+declare(strict_types=1);
+// SPDX-FileCopyrightText: Aao Business Chat <info@aaochat.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 namespace OCA\AaoChat\Controller;
 
-use OCP\IRequest;
+use OCA\AaoChat\AppInfo\Application;
+use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Http\DataResponse;
-use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
-use \OCP\AppFramework\Http\FeaturePolicy;
+use OCP\AppFramework\Http\FeaturePolicy;
 use OCP\AppFramework\Http\RedirectResponse;
-use OCA\AaoChat\AppInfo\Application;
+use OCP\IRequest;
+use OCP\Util;
 use OCP\IURLGenerator;
 use OCA\AaoChat\Service\ConfigProxy;
 use OCA\AaoChat\Service\AaochatService;
+use OCA\AaoChat\Service\ApiauthService;
 use OCP\IConfig;
 use OCP\IUserSession;
-
-use OCA\AaoChat\Service\ApiauthService;
-//use OCA\AaoChat\Db\Apiauth;
-//use OCA\AaoChat\Db\ApiauthMapper;
 use OCP\Security\ICredentialsManager;
 use OCP\Authentication\LoginCredentials\IStore;
-use OCP\Util;
 
 class PageController extends Controller {
+	    /**
+     * @var IConfig
+     */
+    protected $config;
+
 	private $userId;
 	private $is_license_valid = false;
 	private $aaochatService;
@@ -37,9 +43,10 @@ class PageController extends Controller {
 
 	private $apiAuthService;
 
-	public function __construct($AppName, IRequest $request, $UserId, IConfig $config,
-        IURLGenerator $urlGenerator, AaochatService $aaochatService, IUserSession $userSession, ICredentialsManager $credentialsManager, IStore $credentialStore, ApiauthService $apiAuthService){
-		parent::__construct($AppName, $request);
+	public function __construct(IRequest $request, $UserId, IConfig $config,
+	IURLGenerator $urlGenerator, AaochatService $aaochatService, IUserSession $userSession, ICredentialsManager $credentialsManager, IStore $credentialStore, ApiauthService $apiAuthService) {
+		parent::__construct(Application::APP_ID, $request);
+
 		$this->userId = $UserId;
 		$this->config = $config;
 		$this->aaochatService = $aaochatService;
@@ -65,16 +72,12 @@ class PageController extends Controller {
 	}
 
 	/**
-	 * CAUTION: the @Stuff turns off security checks; for this page no admin is
-	 *          required and no CSRF check. If you don't know what CSRF is, read
-	 *          it up in the docs or you might create a security hole. This is
-	 *          basically the only required method to add this exemption, don't
-	 *          add it to any other method if you don't exactly know what it does
-	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function index() {
+	public function index(): TemplateResponse {
+		//Util::addScript(Application::APP_ID, 'aaochat-main');
+		//return new TemplateResponse(Application::APP_ID, 'main');
 		if($this->is_license_valid == false) {
 			return $this->settingPage();
 		} else {
@@ -84,16 +87,14 @@ class PageController extends Controller {
 
 			$aaochat_content = file_get_contents($content_api_url);
 
-			$nonceValue = \OC::$server->getContentSecurityPolicyNonceManager()->getNonce();
-			$aaochat_content = str_replace('<script', '<script nonce="'.$nonceValue.'"', $aaochat_content); 
-
+			if(!empty($aaochat_content)) {
+				$nonceValue = \OC::$server->getContentSecurityPolicyNonceManager()->getNonce();
+				$aaochat_content = str_replace('<script', '<script nonce="'.$nonceValue.'"', $aaochat_content); 
+			}
+			
 			$content_data = array();
 			$content_data['aaochat_content'] = $aaochat_content;
 			$content_data['content_api_url'] = $content_api_url;
-
-			//Util::addStyle(Application::APP_ID, 'https://fonts.googleapis.com/css?family=Roboto:300,400,700,900');
-			//Util::addStyle(Application::APP_ID, 'https://business2.aaochat.com/public/css/font-awesome/css/font-awesome.min.css?v=v27');
-			//Util::addScript(Application::APP_ID, 'https://business2.aaochat.com/public/js/plugins/jquery.min.js');
 
 			//echo "<pre>".print_r($aaochat_content,true)."</pre>";
 			//exit;
@@ -145,7 +146,6 @@ class PageController extends Controller {
 
 			return $response;
 		}
-		
 	}
 
 	/**
@@ -208,11 +208,6 @@ class PageController extends Controller {
 	}
 
 	/**
-	 * CAUTION: the @Stuff turns off security checks; for this page no admin is
-	 *          required and no CSRF check. If you don't know what CSRF is, read
-	 *          it up in the docs or you might create a security hole. This is
-	 *          basically the only required method to add this exemption, don't
-	 *          add it to any other method if you don't exactly know what it does
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -220,8 +215,6 @@ class PageController extends Controller {
 	public function setting() {
 		//Testing purpose
 		echo 'checking...<br/>';
-
-
 		//$user = $event->getUser();
 
 		$currentUser = $this->userSession->getUser();
@@ -255,33 +248,10 @@ class PageController extends Controller {
 		echo "Response:<pre>".print_r($userData,true)."</pre>";
 		exit;
 
-		/*
-		$licenseKey = '8eb2b2f2ac3ad4ba67a68ffaf12191f2'; //$this->config->getAppValue(Application::APP_ID, 'aaochat_licence_key', '');
-		if(!empty($licenseKey)) {
-			$response = $this->aaochatService->validateLicenseKey($licenseKey);
-
-			echo "Response:<pre>".print_r($response,true)."</pre>";
-			exit;
-		}*/
-
-
 		return;
-		/*
-		$url_generator   = \OC::$server->getURLGenerator();
-        $host_url       =  $url_generator->getAbsoluteURL('');
-        $site_url =  $host_url . 'index.php';
-
-        $settingPageUrl = $site_url.'/settings/admin/'.Application::APP_ID;
-        return new RedirectResponse($settingPageUrl);
-        */ 
 	}
 
 	/**
-	 * CAUTION: the @Stuff turns off security checks; for this page no admin is
-	 *          required and no CSRF check. If you don't know what CSRF is, read
-	 *          it up in the docs or you might create a security hole. This is
-	 *          basically the only required method to add this exemption, don't
-	 *          add it to any other method if you don't exactly know what it does
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -298,16 +268,10 @@ class PageController extends Controller {
 		$groupData = $this->aaochatService->getConversation($requestData);
 
 		echo "<pre>".print_r($groupData,true)."</pre>";
-
 		exit;
 	}
 
 	/**
-	 * CAUTION: the @Stuff turns off security checks; for this page no admin is
-	 *          required and no CSRF check. If you don't know what CSRF is, read
-	 *          it up in the docs or you might create a security hole. This is
-	 *          basically the only required method to add this exemption, don't
-	 *          add it to any other method if you don't exactly know what it does
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -321,11 +285,6 @@ class PageController extends Controller {
     }
 
     /**
-	 * CAUTION: the @Stuff turns off security checks; for this page no admin is
-	 *          required and no CSRF check. If you don't know what CSRF is, read
-	 *          it up in the docs or you might create a security hole. This is
-	 *          basically the only required method to add this exemption, don't
-	 *          add it to any other method if you don't exactly know what it does
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -337,5 +296,4 @@ class PageController extends Controller {
         }
         return new JSONResponse($response, Http::STATUS_OK);
     }
-
 }
