@@ -125,6 +125,8 @@ class Application extends App implements IBootstrap {
 
         $aaochat_server_url = $this->aaochatService->getAaochatServerUrl();
         $contentApiDomain = $this->aaochatService->removeHttp($aaochat_server_url); //business2.aaochat.com
+        $aaochat_file_server_url = $this->aaochatService->getAaochatFileServerUrl();
+        $contentFileDomain = $this->aaochatService->removeHttp($aaochat_file_server_url); 
 
         $managerPolicy = \OC::$server->getContentSecurityPolicyManager();
         $policy = new \OCP\AppFramework\Http\EmptyContentSecurityPolicy();
@@ -134,6 +136,7 @@ class Application extends App implements IBootstrap {
         $policy->addAllowedConnectDomain('*');
         $policy->addAllowedConnectDomain('wss:');
         $policy->addAllowedFrameDomain($contentApiDomain);
+        $policy->addAllowedFrameDomain($contentFileDomain);
         $policy->addAllowedImageDomain($contentApiDomain);
         $policy->addAllowedImageDomain('*');
         $policy->addAllowedMediaDomain($contentApiDomain);
@@ -289,8 +292,6 @@ class Application extends App implements IBootstrap {
 
     protected function registerCollaborationResourceProvider(IServerContainer $server): void {
 
-        Util::addScript(self::APP_ID, 'jquery_cookie.min');
-        Util::addScript(self::APP_ID, 'jquery_fancybox');
         Util::addScript(self::APP_ID, 'adminsetting');
         Util::addScript(self::APP_ID, 'script');
 
@@ -303,7 +304,6 @@ class Application extends App implements IBootstrap {
             Util::addStyle(self::APP_ID, 'aaochat');
             Util::addStyle(self::APP_ID, 'aaochat-icons');
             Util::addStyle(self::APP_ID, 'emoji');
-            Util::addStyle(self::APP_ID, 'jquery_fancybox');
 		});
 	}
 
