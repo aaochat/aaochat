@@ -99,7 +99,6 @@ class PageController extends Controller {
 			//echo "<pre>".print_r($aaochat_content,true)."</pre>";
 			//exit;
 			$aaochat_server_url = $this->aaochatService->getAaochatServerUrl();
-			$aaochat_file_server_url = $this->aaochatService->getAaochatFileServerUrl();
 			$contentApiDomain = $this->aaochatService->removeHttp($aaochat_server_url); //'business2.aaochat.com';
 			$aaochat_file_server_url = $this->aaochatService->getAaochatFileServerUrl();
 			$contentFileApiDomain = $this->aaochatService->removeHttp($aaochat_file_server_url); //'business2.aaochat.com';
