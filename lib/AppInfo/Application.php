@@ -42,7 +42,7 @@ use OCP\User\Events\UserCreatedEvent;
 use OCP\User\Events\UserChangedEvent;
 use OCP\User\Events\BeforeUserDeletedEvent;
 use OCP\User\Events\UserLoggedInEvent;
-use OCP\User\Events\UserLoggedOutEvent;
+use OCP\User\Events\BeforeUserLoggedOutEvent;
 use OCP\Share\Events\ShareCreatedEvent;
 use OCP\Share\Events\ShareDeletedEvent;
 
@@ -223,7 +223,7 @@ class Application extends App implements IBootstrap {
         $context->registerEventListener(ShareDeletedEvent::class, FileUnshareListener::class);
 
         $context->registerEventListener(UserLoggedInEvent::class, UserLoggedInListener::class);
-        $context->registerEventListener(UserLoggedOutEvent::class, UserLoggedOutListener::class);
+        $context->registerEventListener(BeforeUserLoggedOutEvent::class, UserLoggedOutListener::class);
         
         $context->registerEventListener(ManagerEvent::EVENT_APP_ENABLE, AppEnableListener::class);
         $context->registerEventListener(ManagerEvent::EVENT_APP_ENABLE_FOR_GROUPS, AppEnableforgroupsListener::class);

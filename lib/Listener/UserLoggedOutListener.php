@@ -27,7 +27,7 @@ namespace OCA\AaoChat\Listener;
 
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
-use OCP\User\Events\UserLoggedOutEvent;
+use OCP\User\Events\BeforeUserLoggedOutEvent;
 use OCA\AaoChat\Service\AaochatService;
 
 /*
@@ -53,7 +53,7 @@ class UserLoggedOutListener implements IEventListener {
 	 * @inheritDoc
 	 */
 	public function handle(Event $event): void {
-		if (!($event instanceof UserLoggedOutEvent)) {
+		if (!($event instanceof BeforeUserLoggedOutEvent)) {
 			// Unrelated
 			return;
 		}
