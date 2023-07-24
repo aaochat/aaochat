@@ -58,29 +58,41 @@ class UserLoggedOutListener implements IEventListener {
 			return;
 		}
 
-		$user = $event->getUser();
-        $userId = $user->getUID();
-        $userEmail = $user->getEMailAddress();
-        $userDisplayName = $user->getDisplayName();
-        $avatarImage = $user->getAvatarImage(100);
+		try {
+			$user = $event->getUser();
+			$userId = 0;
+			$userEmail = '';
+			$userDisplayName = '';
+			$avatarImage = '';
+			if(!empty($user)) {
+				$userId = $user->getUID();
+				$userEmail = $user->getEMailAddress();
+				$userDisplayName = $user->getDisplayName();
+				$avatarImage = $user->getAvatarImage(100);
+			}
 
-		unset($_COOKIE['ncUserAuthKey']);
-		setcookie('ncUserAuthKey', '', -1, '/'); 
-		unset($_COOKIE['aaochatServerUrl']);
-		setcookie('aaochatServerUrl', '', -1, '/');
-		unset($_COOKIE['aaochatFileServerUrl']);
-		setcookie('aaochatFileServerUrl', '', -1, '/');
+	
+			unset($_COOKIE['ncUserAuthKey']);
+			setcookie('ncUserAuthKey', '', -1, '/'); 
+			unset($_COOKIE['aaochatServerUrl']);
+			setcookie('aaochatServerUrl', '', -1, '/');
+			unset($_COOKIE['aaochatFileServerUrl']);
+			setcookie('aaochatFileServerUrl', '', -1, '/');
+	
+			$userData = array();
+			$userData['userId'] = $userId;
+			$userData['userEmail'] = $userEmail;
+			$userData['userDisplayName'] = $userDisplayName;
+			$userData['avatarImage'] = $avatarImage;
+	
+			if($this->aaochatService->isAaochatApiLogEnable()) {
+				$aaochat_log_dir = $this->aaochatService->getAaochatLogPath();
+				$userData = json_encode($userData);
+				$myfile = file_put_contents($aaochat_log_dir.'user_loggedout.txt', $userData.PHP_EOL , FILE_APPEND | LOCK_EX);
+			}
+		} catch(\Exception $e) {
+           
+        }
 
-        $userData = array();
-        $userData['userId'] = $userId;
-        $userData['userEmail'] = $userEmail;
-        $userData['userDisplayName'] = $userDisplayName;
-        $userData['avatarImage'] = $avatarImage;
-
-		if($this->aaochatService->isAaochatApiLogEnable()) {
-			$aaochat_log_dir = $this->aaochatService->getAaochatLogPath();
-			$userData = json_encode($userData);
-        	$myfile = file_put_contents($aaochat_log_dir.'user_loggedout.txt', $userData.PHP_EOL , FILE_APPEND | LOCK_EX);
-		}
 	}
 }
