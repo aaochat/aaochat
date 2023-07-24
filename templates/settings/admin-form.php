@@ -134,6 +134,7 @@ if(empty($_['aaochat_lead_domain_identifier'])) {
                     </div>
                     <div class="side-menu-setting-form">
                         <input type="text" placeholder="<?php p($l->t('Domain Name')); ?>" class="side-menu-setting" id="aaochat_lead_domain_identifier" name="aaochat_lead_domain_identifier" value="<?php echo $_['aaochat_lead_domain_identifier']; ?>" style="width: 100%;" <?php echo ($isDomainEditable=='no')? 'readonly="readonly"': '';?>>
+                        <span style="font-size:12px;"><?php p($l->t("(Only Alphabets, numbers, - , _ , . are allowed)")); ?></span>
                     </div>
                 </div>
                 <div class="side-menu-setting-row">
