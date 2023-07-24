@@ -50,6 +50,10 @@ if(isset($_['aaochat_license_status']) && $_['aaochat_license_status'] == 'activ
     $isDomainEditable = 'no';
 }
 
+if(empty($_['aaochat_lead_domain_identifier'])) {
+    $isDomainEditable = 'yes';
+}
+
 ?>
 
 <div id="side-menu-section">
