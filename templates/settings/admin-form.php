@@ -35,16 +35,19 @@ if(isset($_['aaochat_license_key']) && !empty($_['aaochat_license_key'])) {
 
 $isLeadEditAllowed = 'yes';
 $isLeadCreated = 'no';
+$isDomainEditable = 'yes';
 //if(isset($_['aaochat_lead_id']) && !empty($_['aaochat_lead_id'])) {
 if(isset($_['aaochat_lead_email']) && !empty($_['aaochat_lead_email'])) {
     $isLeadCreated = 'yes';
     $isLeadEditAllowed = 'no';
+    $isDomainEditable = 'no';
 }
 
 $isLicenseValid = 'no';
 if(isset($_['aaochat_license_status']) && $_['aaochat_license_status'] == 'active') {
     $isLicenseValid = 'yes';
     $isLeadEditAllowed = 'yes';
+    $isDomainEditable = 'no';
 }
 
 ?>
@@ -118,6 +121,15 @@ if(isset($_['aaochat_license_status']) && $_['aaochat_license_status'] == 'activ
                             }
                         ?>
                         </select>
+                    </div>
+                </div>
+                <div class="side-menu-setting-row">
+                    <div class="side-menu-setting-label">
+                        <?php p($l->t('Domain Name')); ?>
+                        <span style="color:red;">*</span>
+                    </div>
+                    <div class="side-menu-setting-form">
+                        <input type="text" placeholder="<?php p($l->t('Domain Name')); ?>" class="side-menu-setting" id="aaochat_lead_domain_identifier" name="aaochat_lead_domain_identifier" value="<?php echo $_['aaochat_lead_domain_identifier']; ?>" style="width: 100%;" <?php echo ($isDomainEditable=='no')? 'readonly="readonly"': '';?>>
                     </div>
                 </div>
                 <div class="side-menu-setting-row">

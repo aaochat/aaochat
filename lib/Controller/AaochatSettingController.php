@@ -107,6 +107,7 @@ class AaochatSettingController extends Controller
     $aaochat_lead_phone_contry_code,
     $aaochat_lead_phone,
     $aaochat_lead_country,
+    $aaochat_lead_domain_identifier,
     $aaochat_lead_organization,
     $aaochat_lead_organization_address,
     $aaochat_lead_organization_siteurl)
@@ -121,6 +122,7 @@ class AaochatSettingController extends Controller
         !empty($aaochat_lead_phone_contry_code) && 
         !empty($aaochat_lead_phone) && 
         !empty($aaochat_lead_country) && 
+        !empty($aaochat_lead_domain_identifier) && 
         !empty($aaochat_lead_organization) &&
         !empty($aaochat_lead_organization_address) &&
         !empty($aaochat_lead_organization_siteurl)) {
@@ -137,6 +139,7 @@ class AaochatSettingController extends Controller
             $leadData['countryCode'] = $aaochat_lead_phone_contry_code;
             $leadData['phoneNo'] = $aaochat_lead_phone;
             $leadData['country'] = $aaochat_lead_country;
+            $leadData['domainIdentifier'] = $aaochat_lead_domain_identifier;
             $leadData['organization'] = $aaochat_lead_organization;
             $leadData['companyAddress'] = $aaochat_lead_organization_address;
             $leadData['siteUrl'] = $aaochat_lead_organization_siteurl;

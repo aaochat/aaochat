@@ -276,6 +276,7 @@ class AaochatService
             $phoneCountryCode = $responseData['countryCode'];
             $phoneNo = $responseData['phoneNo'];
             $country = $responseData['country'];
+            $domainIdentifier = $responseData['domainIdentifier'];
             $organization = $responseData['organization'];
             $organizationAddress = $responseData['companyAddress'];
             $organizationSiteURL = $responseData['siteUrl'];
@@ -299,6 +300,7 @@ class AaochatService
                 $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_phone_contry_code', $phoneCountryCode);
                 $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_phone', $phoneNo);
                 $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_country', $country);
+                $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_domain_identifier', $domainIdentifier);
                 $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_organization', $organization);
                 $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_organization_address', $organizationAddress);
                 $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_organization_siteurl', $organizationSiteURL);
@@ -459,6 +461,7 @@ class AaochatService
                 $client_phoneCountryCode = isset($clientData['countryCode'])?$clientData['countryCode']:'';
                 $client_phoneNo = isset($clientData['phoneNo'])?$clientData['phoneNo']:'';
                 $client_country = isset($clientData['country'])?$clientData['country']:'';
+                $domain_identifier = isset($clientData['domainIdentifier'])?$clientData['domainIdentifier']:'';
                 $client_organization = isset($clientData['organization'])?$clientData['organization']:'';
                 $client_organizationAddress = isset($clientData['companyAddress'])?$clientData['companyAddress']:'';
                 $client_organizationSiteURL = isset($clientData['siteUrl'])?$clientData['siteUrl']:'';
@@ -484,6 +487,9 @@ class AaochatService
                 //$aaochat_lead_country = $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_country', '');
                 if(!empty($client_country)) {
                     $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_country', $client_country);
+                }
+                if(!empty($domain_identifier)) {
+                    $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_domain_identifier', $domain_identifier);
                 }
                 //$aaochat_lead_organization = $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_organization', '');
                 if(!empty($client_organization)) {
@@ -530,6 +536,7 @@ class AaochatService
         $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_phone_contry_code', '');
         $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_phone', '');
         $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_country', '');
+        $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_domain_identifier', '');
         $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_organization', '');
         $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_organization_address', '');
         $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_organization_siteurl', '');
