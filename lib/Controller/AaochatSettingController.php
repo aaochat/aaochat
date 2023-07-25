@@ -160,6 +160,9 @@ class AaochatSettingController extends Controller
                 $responseJson = $this->aaochatService->createLead($leadData);
                 $response = json_decode($responseJson, true);
                 if(isset($response['status']) && $response['status']=='success') {
+                    if(!isset($response['data']['domainIdentifier'])) {
+                        $response['data']['domainIdentifier'] = $leadData['domainIdentifier'];
+                    }
                     //Update setting in Nextcloud DB
                     $this->aaochatService->updateAaochatLeadData('add',$response);
                 } else {
