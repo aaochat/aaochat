@@ -173,7 +173,7 @@ class AaochatSettingController extends Controller
         }
 
         if($isJsonRes == false) {
-            $response = json_encode($response);
+            //$response = json_encode($response);
         }
         return $response;
     }
