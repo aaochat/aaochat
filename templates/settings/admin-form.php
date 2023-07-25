@@ -170,7 +170,7 @@ if(empty($_['aaochat_lead_domain_identifier'])) {
                         <?php p($l->t('Status')); ?>
                     </div>
                     <div class="side-menu-setting-form">
-                        <input type="text" class="side-menu-setting" id="aaochat_lead_status" name="aaochat_lead_status" value="<?php echo $_['aaochat_lead_status']; ?>" style="width: 100%;" <?php echo ($isLeadEditAllowed=='no')? 'readonly="readonly"': '';?>>
+                        <input type="text" class="side-menu-setting" id="aaochat_lead_status" name="aaochat_lead_status" value="<?php echo $_['aaochat_lead_status']; ?>" style="width: 100%;" <?php echo ($isLicenseValid=='yes')? 'readonly="readonly"': '';?>>
                     </div>
                 </div>
                 <?php } ?>

@@ -307,7 +307,7 @@ class AaochatService
                 if($action == 'add') {
                     $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_status', $status);
                 } else if($action == 'update') {
-                    $this->config->setAppValue(Application::APP_ID, 'aaochat_lead_status', 'active');
+                    //$this->config->setAppValue(Application::APP_ID, 'aaochat_lead_status', 'active');
                 }
             }
         }
