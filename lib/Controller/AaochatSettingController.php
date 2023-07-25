@@ -165,6 +165,8 @@ class AaochatSettingController extends Controller
                     }
                     //Update setting in Nextcloud DB
                     $this->aaochatService->updateAaochatLeadData('add',$response);
+                } else if(isset($response['status']) && $response['status']=='error') {
+                    $response['message'] = $response['message'];
                 } else {
                     $response['message'] = 'Registration failed. Please try after sometime.';
                 }
