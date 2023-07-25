@@ -51,7 +51,7 @@ class AaochatService
     private $urlGenerator;
 
     private $host_url;
-    public $content_api_base_url = 'https://business2.aaochat.com/next-cloud/';
+    public $content_api_base_url = 'https://business.aaochat.com/next-cloud/';
     private $api_base_url = 'https://master.aaochat.com'; 
     private $aaochat_instance_type;
     private $aaochat_server_url;
