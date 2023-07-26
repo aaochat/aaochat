@@ -28,15 +28,26 @@ use OCA\Files\Event\LoadSidebar;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\Util;
+use OCP\IConfig;
 
 class LoadSidebarListener implements IEventListener {
+
+	private $aaochatService;
+
+    public function __construct() {
+        $this->config = \OC::$server[IConfig::class];
+    }
+
 	public function handle(Event $event): void {
 		if (!($event instanceof LoadSidebar)) {
 			return;
 		}
 
-		// TODO: make sure to only include the sidebar script when
-		// we properly split it between files list and sidebar
-		Util::addScript(Application::APP_ID, 'aaochat_sidebar','files');
+		$isLicenseValid = $this->config->getAppValue(Application::APP_ID, 'aaochat_is_license_valid', '');
+		if($isLicenseValid === 'yes') {
+			// TODO: make sure to only include the sidebar script when
+			// we properly split it between files list and sidebar
+			Util::addScript(Application::APP_ID, 'aaochat_sidebar','files');
+		}
 	}
 }
