@@ -25,14 +25,12 @@ declare(strict_types=1);
  */
 namespace OCA\AaoChat\Listener;
 
-
+use Exception;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 //use OCP\User\Events\UserDeletedEvent;
 use OCP\User\Events\BeforeUserDeletedEvent;
-use OCP\IUserManager;
 use OCA\AaoChat\Service\AaochatService;
-use OCP\IConfig;
 
 /**
  * Class UserDeletedListener
@@ -40,11 +38,6 @@ use OCP\IConfig;
  * @package OCA\AaoChat\Listener
  */
 class UserDeletedListener implements IEventListener {
-
-	/**
-     * @var OC\AllConfig
-     */
-    protected $config;
 
     private $aaochatService;
 

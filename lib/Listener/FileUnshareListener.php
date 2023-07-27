@@ -68,6 +68,7 @@ class FileUnshareListener implements IEventListener {
 			// Unrelated
 			return;
 		}
+        $shareData = array();
 
         $share = $event->getShare();
         $sharedNode = $share->getNode();
@@ -90,29 +91,26 @@ class FileUnshareListener implements IEventListener {
         $sharedFilePath = \OC\Files\Filesystem::getPath($fileId);
         $fileOwner = \OC\Files\Filesystem::getOwner($sharedFilePath);
 
+        $shareData = array();
+        $shareData['fileId'] = $fileId;
+        $shareData['fileType'] = $fileType;
+        $shareData['shareWith'] = $shareWith;
+        $shareData['shareDisplayName'] = $shareDisplayName;
+        $shareData['permissions'] = $permissions;
+        $shareData['shareBy'] = $shareBy;
+        $shareData['shareOwner'] = $shareOwner;
+        $shareData['target'] = $target;
+
+
         $aaochatGroup = $this->aaochatService->getAaochatGroup($fileId);
         $aaochatGroup = json_decode($aaochatGroup,true);
         if(isset($aaochatGroup['status']) && $aaochatGroup['status']=='success') {
-
-            /*
-            $shareData = array();
-            $shareData['fileId'] = $fileId;
-            $shareData['fileType'] = $fileType;
-            $shareData['shareWith'] = $shareWith;
-            $shareData['shareDisplayName'] = $shareDisplayName;
-            $shareData['permissions'] = $permissions;
-            $shareData['shareBy'] = $shareBy;
-            $shareData['shareOwner'] = $shareOwner;
-            $shareData['target'] = $target;
-            */
-
             $shareInfo = array();
             $shareInfo['objectId'] = $fileId;
             $shareInfo['objectName'] = trim($target,"/");
             $shareInfo['objectType'] = $fileType;
             $shareInfo['filePath'] = $sharedFilePath;
-            $shareInfo['creator'] = $fileOwner;
-            
+            $shareInfo['creator'] = $fileOwner;            
 
             $shareUserInfo = array();
             $dir_path = $sharedFilePath;
@@ -121,29 +119,7 @@ class FileUnshareListener implements IEventListener {
             //$shareInfo['userid'] = $userid;
             if (\OC\Files\Filesystem::file_exists($dir_path)) {
                 //$shareInfo['dir_path'] = $dir_path;
-                            
-                /*
-                $sharedData = $this->aaochatService->getShareData(array('path'=>$dir_path));
-                //$shareInfo['sharedData'] = $sharedData;
-                if(isset($sharedData['status']) && $sharedData['status']=='success') {
-                    if(isset($sharedData['data']) && !empty($sharedData['data'])) {
-                        foreach ($sharedData['data'] as $key => $sharedUserInfo) {
-                            $id = $sharedUserInfo['id'];
-                            $shared_with = $sharedUserInfo['share_with'];
-                            $shared_permissions = $sharedUserInfo['permissions'];
-                            if(empty($shared_with)) {
-                                $shared_with = $sharedUserInfo['uid_owner'];
-                            }
 
-                            $shareUserInfo[$shared_with]['id'] = $id;
-                            $shareUserInfo[$shared_with]['shared_with'] = $shared_with;
-                            $shareUserInfo[$shared_with]['permissions'] = $shared_permissions;
-                        }
-                    }
-                }
-                */
-                            
-                
                 $sharedData = $this->shareManager->getAccessList($sharedNode,false);
                 //$shareInfo['sharedData'] = $sharedData;
                 if(isset($sharedData['users']) && !empty($sharedData['users'])) {
@@ -152,7 +128,6 @@ class FileUnshareListener implements IEventListener {
                         $shareUserInfo[$sharedUserInfo]['permissions'] = 1;
                     }
                 }
-                
             }
             $shareInfo['shareInfo'] = $shareUserInfo;
 

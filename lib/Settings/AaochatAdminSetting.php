@@ -71,6 +71,7 @@ class AaochatAdminSetting implements ISettings {
             'aaochat_lead_phone_contry_code' => $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_phone_contry_code', ''),
             'aaochat_lead_phone' => $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_phone', ''),
             'aaochat_lead_country' => $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_country', ''),
+            'aaochat_lead_domain_identifier' => $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_domain_identifier', ''),
             'aaochat_lead_organization' => $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_organization', ''),
             'aaochat_lead_organization_address' => $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_organization_address', ''),
             'aaochat_lead_organization_siteurl' => $this->config->getAppValue(Application::APP_ID, 'aaochat_lead_organization_siteurl', ''),

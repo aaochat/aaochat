@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <!--
+    SPDX-FileCopyrightText: Aao Business Chat <info@aaochat.com>
+    SPDX-License-Identifier: CC0-1.0
+    -->
     <id>aaochat</id>
     <name>Aao Business Chat</name>
     <summary>Aao Business Chat</summary>
@@ -25,9 +29,9 @@ Experience Seamless and Efficient Team communication with Aao Business Chat.
 #####
 
 Here is the **[link](https://youtu.be/0n6bcnDckyc)** to the video: Step by step guide on how to install Aao Business Chat on Nextcloud **[https://youtu.be/0n6bcnDckyc](https://youtu.be/0n6bcnDckyc)**]]></description>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
     <licence>agpl</licence>
-    <author mail="info@aaochat.com" >Aao Business Chat</author>
+    <author mail="info@aaochat.com" homepage="https://aaochat.com">Aao Business Chat</author>
     <namespace>AaoChat</namespace>
     <category>tools</category>
     <website>https://aaochat.com/</website>
@@ -39,7 +43,7 @@ Here is the **[link](https://youtu.be/0n6bcnDckyc)** to the video: Step by step 
        <filesystem />
     </types>
     <dependencies>
-        <nextcloud min-version="23" max-version="26"/>
+        <nextcloud min-version="26" max-version="27"/>
     </dependencies>
     <!--
     <navigations>

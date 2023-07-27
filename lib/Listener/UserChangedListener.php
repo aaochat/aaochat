@@ -91,8 +91,10 @@ class UserChangedListener implements IEventListener {
         //$response = $this->aaochatService->sendWebhookData('userUpdated',$userData);
         $response = $this->aaochatService->syncUserdataToAaochat($userData);
 
-        //$userData = json_encode($response);
-        //$myfile = file_put_contents('/var/www/html/nextcloud_23/data/user_changed.txt', $userData.PHP_EOL , FILE_APPEND | LOCK_EX);
+        if($this->aaochatService->isAaochatApiLogEnable()) {
+            $aaochat_log_dir = $this->aaochatService->getAaochatLogPath();
+		    $userData = json_encode($userData);
+            $myfile = file_put_contents($aaochat_log_dir.'userstatus_changed.txt', $userData.PHP_EOL , FILE_APPEND | LOCK_EX);
+        }
 	}
-
 }

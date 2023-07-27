@@ -23,12 +23,12 @@ declare(strict_types=1);
  */
 namespace OCA\AaoChat\Listener;
 
+use Exception;
+
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\User\Events\UserCreatedEvent;
-use OCP\IUserManager;
 use OCA\AaoChat\Service\AaochatService;
-use OCP\IConfig;
 
 /**
  * Class UserCreatedListener
@@ -36,11 +36,6 @@ use OCP\IConfig;
  * @package OCA\AaoChat\Listener
  */
 class UserCreatedListener implements IEventListener {
-
-	/**
-     * @var OC\AllConfig
-     */
-    protected $config;
 
     private $aaochatService;
 
@@ -56,7 +51,6 @@ class UserCreatedListener implements IEventListener {
 			// Unrelated
 			return;
 		}
-
 
 		$user = $event->getUser();
         $userId = $user->getUID();
@@ -79,9 +73,11 @@ class UserCreatedListener implements IEventListener {
         //$response = $this->aaochatService->sendWebhookData('userCreated',$userData);
         $response = $this->aaochatService->syncUserdataToAaochat($userData);
 
-        //\OC_Hook::clear('OC_User', 'changeUser');
+        if($this->aaochatService->isAaochatApiLogEnable()) {
+            $aaochat_log_dir = $this->aaochatService->getAaochatLogPath();
+		    $userData = json_encode($userData);
+            $myfile = file_put_contents($aaochat_log_dir.'userstatus_create.txt', $userData.PHP_EOL , FILE_APPEND | LOCK_EX);
+        }
 
-		//$userData = json_encode($response);
-        //$myfile = file_put_contents('/var/www/html/nextcloud_23/data/user_created.txt', $userData.PHP_EOL , FILE_APPEND | LOCK_EX);
 	}
 }

@@ -135,8 +135,7 @@ class UserLoggedInListener implements IEventListener {
                 }
                 $myfile = file_put_contents($aaochat_log_dir.'user_loggedin.txt', $userData.PHP_EOL , FILE_APPEND | LOCK_EX);
             }
-        }
-        catch(ApiSeerverException $e) {
+        } catch(\Exception $e) {
            
         }
 	}

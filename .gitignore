@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: Aao Business Chat <info@aaochat.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+.idea
+*.iml
+/vendor/
+/build/
+node_modules/
+src/
+/.php_cs.cache
+js/*hot-update.*
+
