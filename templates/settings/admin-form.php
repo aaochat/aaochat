@@ -54,6 +54,12 @@ if(empty($_['aaochat_lead_domain_identifier'])) {
     $isDomainEditable = 'yes';
 }
 
+if(empty($_['aaochat_lead_phone_contry_code'])) {
+    $_['aaochat_lead_phone_contry_code'] = '+1';
+}
+if(empty($_['aaochat_lead_country'])) {
+    $_['aaochat_lead_country'] = 'United States';
+}
 ?>
 
 <div id="side-menu-section">
@@ -62,6 +68,7 @@ if(empty($_['aaochat_lead_domain_identifier'])) {
          <h2>
             <?php p($l->t('Aao Business Chat Settings')); ?>
         </h2>
+        <span>Need Technical support? Contact us at support@aaochat.com</span>
     </div>
 
 <div id="aaochat-lead">
