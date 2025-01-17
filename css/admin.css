@@ -122,6 +122,9 @@
 }
 #aaochat_lead_status_msg {
     color: #084d12;
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 10px;
 }
 .aaochat_lead_phone {
     float: left;
