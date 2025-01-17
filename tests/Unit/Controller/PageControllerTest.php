@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-// SPDX-FileCopyrightText: Aao Business Chat <info@aaochat.com>
+// SPDX-FileCopyrightText: Aao Chat <info@aaochat.com>
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 namespace OCA\AaoChat\Tests\Unit\Controller;

@@ -1,5 +1,5 @@
 const path = require('path')
-// SPDX-FileCopyrightText: Aao Business Chat <info@aaochat.com>
+// SPDX-FileCopyrightText: Aao Chat <info@aaochat.com>
 // SPDX-License-Identifier: AGPL-3.0-or-later
 const webpackConfig = require('@nextcloud/webpack-vue-config')
 
