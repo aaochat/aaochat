@@ -66,7 +66,7 @@ if(empty($_['aaochat_lead_country'])) {
 
     <div class="section">
          <h2>
-            <?php p($l->t('Aao Business Chat Settings')); ?>
+            <?php p($l->t('Aao Chat Settings')); ?>
         </h2>
         <span><?php p($l->t('Need Technical support? Contact us at ')); ?><a href="mailto:<?php p($l->t('support@aaochat.com')); ?>" alt=""><u><?php p($l->t('support@aaochat.com')); ?></u></a></span>
     </div>

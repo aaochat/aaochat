@@ -1,8 +1,8 @@
 {
   "name": "aaochat",
-  "description": "Aao Business Chat",
+  "description": "Aao Chat",
   "version": "0.0.1",
-  "author": "Aao Business Chat <info@aaochat.com>",
+  "author": "Aao Chat <info@aaochat.com>",
   "main": "src/main.js",
   "directories": {
     "lib": "lib"

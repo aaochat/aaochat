@@ -28,7 +28,7 @@ class AaochatAdmin implements IIconSection {
     }
 
     public function getName(): string {
-        return $this->l->t('Aao Business Chat');
+        return $this->l->t('Aao Chat');
     }
 
     public function getPriority(): int {

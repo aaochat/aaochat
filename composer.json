@@ -1,11 +1,11 @@
 {
 	"name": "aaochat/aaochat",
-	"description": "Aao Business Chat",
+	"description": "Aao Chat",
 	"type": "project",
 	"license": "AGPL-3.0-or-later",
 	"authors": [
 		{
-			"name": "Aao Business Chat"
+			"name": "Aao Chat"
 		}
 	],
 	"require-dev": {

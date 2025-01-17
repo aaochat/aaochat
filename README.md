@@ -11,15 +11,15 @@ Clone the contents of the repository into your `apps` directory and rename it to
 
 ## Configuration
 ### Registration and Licence key activation
-Admin user need to register from Aao Business Chat setting page.
+Admin user need to register from Aao Chat setting page.
 
-Aao Business Chat team will review the details and setup chat server and create licence key.
+Aao Chat team will review the details and setup chat server and create licence key.
 
-Aao Business Chat team will send the details and licence key through mail.
+Aao Chat team will send the details and licence key through mail.
 
-Admin user need to activete that licence key from  Aao Business Chat setting page.
+Admin user need to activete that licence key from  Aao Chat setting page.
 
 ## Licenses
-Aao Business Chat: [GNU Affero General Public License](http://www.gnu.org/licenses/agpl-3.0.html)
+Aao Chat: [GNU Affero General Public License](http://www.gnu.org/licenses/agpl-3.0.html)
 
 Scriptjs: [MIT License](https://opensource.org/licenses/MIT)
