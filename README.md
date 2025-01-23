@@ -1,4 +1,4 @@
-# AaoBusinessChat
+# AaoChat
 ## Description
 All nextcloud users can chat internally using main window. Or in particular file with those with whome the file has been shared.
 
